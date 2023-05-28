@@ -1,0 +1,22 @@
+plugins{
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+java{
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+dependencies {
+
+}
+application{
+    mainClass = 'server.Airport'
+
+}
+jar{
+    manifest{
+        attributes 'Main-Class': application.mainClass
+    }
+}
