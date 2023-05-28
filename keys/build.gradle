@@ -9,10 +9,10 @@ java{
     }
 }
 dependencies {
-    implementation project(':keys')
+
 }
 application{
-    mainClass = 'server.Airport'
+    mainClass = 'keys.AirportKeys'
 
 }
 jar{
