@@ -1,5 +1,7 @@
 package server;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,6 +12,8 @@ import java.net.Socket;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Base64;
 import java.util.Date;
 import java.util.LinkedList;
@@ -21,6 +25,8 @@ import keys.AirportKeys;
 public class Airport {
     private static PublicKey serverPublicKey;
     private static PrivateKey serverPrivateKey;
+    public static final String pubKeyFile = "airportserverkey.pub";
+    public static final String privKeyFile = "airportserverkey";
     public static void main(String[] args) {
         ensureKeys();
         Socket clientSocket = null;
@@ -39,7 +45,13 @@ public class Airport {
                         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         String command = decode(in.readLine());
                         System.out.printf("Received command: `%s` [%s]\n", command, new Date());
-                        String answer = processCommand(command);
+                        String answer;
+                        try {
+                            answer = processCommand(command);
+                        }catch (SQLException sql){
+                            sql.printStackTrace();
+                            answer = "SQLException";
+                        }
                         out.write(answer + "\n");
                         System.out.println("Sent to client: " + answer);
                         out.flush();
@@ -58,8 +70,8 @@ public class Airport {
     }
 
     private static void ensureKeys() {
-        File pub = new File("airportserverkey.pub");
-        File pri = new File("airportserverkey");
+        File pub = new File(pubKeyFile);
+        File pri = new File(privKeyFile);
         if(pub.exists() && pri.exists()) {
             serverPrivateKey = AirportKeys.readPrivateKey(pri);
             serverPublicKey = AirportKeys.readPublicKey(pub);
@@ -81,16 +93,40 @@ public class Airport {
         return str;
     }
 
-    private static String processCommand(String command) {
+    private static String processCommand(String command) throws SQLException{
         LinkedList<String> cmdlets = Parser.parse(command);
         String cmd = cmdlets.get(0);
-        if(cmd.equalsIgnoreCase("getKey")){
+
+        if(cmd.equalsIgnoreCase("getKey"))
             return new String(Base64.getEncoder().encode(serverPublicKey.getEncoded()));
-        }else if(cmd.equalsIgnoreCase("register")){
-            return "rEgister";
-        }else if(cmd.equalsIgnoreCase("login")){
-            return "lOgin";
+
+        if(cmd.equalsIgnoreCase("register")){
+            if(cmdlets.size()!=3) return "Not 3 args";
+            return Authenticator.get().register(cmdlets.get(1), cmdlets.get(2));
         }
+        if(cmd.equalsIgnoreCase("login")){
+            if(cmdlets.size()<3) return "Not 3 args";
+            return Authenticator.get().login(cmdlets.get(1), cmdlets.get(2));
+        }
+
+        //String jwtString = cmdlets.pollFirst();
+        //DecodedJWT jwt = Authenticator.get().validateJWT(jwtString);
+        //cmd = cmdlets.get(0);
+
+        if(cmd.equalsIgnoreCase("getall"))
+            try(ResultSet rs = DB.get().executeQuery("SELECT * FROM flight")) {
+                return ResponseGenerator.getall(rs);
+            }
+
+        if(cmd.equalsIgnoreCase("addflight")){
+            DB.get().executeUpdate("INSERT INTO flight VALUES(%d, \"%s\", \"%s\", %d)",
+                    DB.get().newId(), cmdlets.get(1), cmdlets.get(2), new Date().getTime());
+            return "Added";
+        }
+
+
+
+
         return "Command does not exist";
     }
 

@@ -10,6 +10,10 @@ java{
 }
 dependencies {
     implementation project(':keys')
+    implementation 'org.xerial:sqlite-jdbc:3.40.1.0'
+    // https://github.com/auth0/java-jwt
+    implementation "com.auth0:java-jwt:4.3.0"
+    implementation 'at.favre.lib:bcrypt:0.10.2'
 }
 application{
     mainClass = 'server.Airport'
