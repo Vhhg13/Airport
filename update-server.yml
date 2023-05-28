@@ -1,0 +1,19 @@
+- name: Upload Airport.jar to Server
+  hosts: featherserver
+  remote_user: maxx
+  vars:
+    ansible_port: 34
+  tasks:
+    - name: Delete old Airport.jar
+      shell: rm /home/maxx/Airport.jar
+    - name: Copy Airport.jar to Server
+      copy:
+        src: server/build/libs/server-all.jar
+        dest: /home/maxx/Airport.jar
+        owner: maxx
+        group: maxx
+        mode: '0644'
+    - name: Restart Airport
+      shell: /home/maxx/runairport ansible
+      async: 10
+      poll: 0
