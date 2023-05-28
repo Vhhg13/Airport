@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Airport</string>
+    <string name="brand_name">Авиарейсы аэропорта</string>
+    <string name="welcome">Добро пожаловать!</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="login">Войти</string>
+    <string name="woregister">Продолжить без регистрации</string>
 </resources>
