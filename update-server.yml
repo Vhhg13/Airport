@@ -5,15 +5,15 @@
     ansible_port: 34
   tasks:
     - name: Delete old Airport.jar
-      shell: rm /home/maxx/Airport.jar
+      shell: rm /home/maxx/Airport/Airport.jar
     - name: Copy Airport.jar to Server
       copy:
         src: server/build/libs/server-all.jar
-        dest: /home/maxx/Airport.jar
+        dest: /home/maxx/Airport/Airport.jar
         owner: maxx
         group: maxx
         mode: '0644'
     - name: Restart Airport
-      shell: /home/maxx/runairport ansible
+      shell: /home/maxx/Airport/runairport ansible
       async: 10
       poll: 0
