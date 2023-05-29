@@ -17,7 +17,7 @@ public class DB {
     private final Statement st;
     private int lastId;
     private DB() throws SQLException{
-        connection = DriverManager.getConnection("jdbc:sqlite:__airport.db");
+        connection = DriverManager.getConnection("jdbc:sqlite:/home/maxx/Airport/__airport.db");
         st = connection.createStatement();
         st.setQueryTimeout(30);
         boolean usersExist = false,
@@ -47,7 +47,9 @@ public class DB {
                     "ID integer PRIMARY KEY," +
                     "startpoint VARCHAR(20)," +
                     "dest VARCHAR(20)," +
-                    "date integer)");
+                    "date0 integer," +
+                    "date1 integer," +
+                    "price integer)");
         }
         if(!favsExist){
             st.execute("CREATE TABLE favs ( " +

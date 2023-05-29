@@ -126,8 +126,12 @@ public class Airport {
             }
 
         if(cmd.equalsIgnoreCase("addflight")){
-            DB.get().executeUpdate("INSERT INTO flight VALUES(%d, \"%s\", \"%s\", %d)",
-                    DB.get().newId(), cmdlets.get(1), cmdlets.get(2), new Date().getTime());
+            if(cmdlets.size() == 2)
+                DB.get().executeUpdate("INSERT INTO flight VALUES(%d, \"%s\", \"%s\", %d, %d, %d)",
+                        DB.get().newId(), cmdlets.get(1), cmdlets.get(2), new Date().getTime(), new Date().getTime(), (int)(Math.random()*10000));
+            else
+                DB.get().executeUpdate("INSERT INTO flight VALUES(%d, \"%s\", \"%s\", %d, %d, %d)",
+                        DB.get().newId(), cmdlets.get(1), cmdlets.get(2), cmdlets.get(3), cmdlets.get(4), cmdlets.get(5));
             return "Added";
         }
 
