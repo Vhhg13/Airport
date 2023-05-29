@@ -6,8 +6,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.security.PublicKey;
+import java.util.Base64;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+
+import keys.AirportKeys;
 
 public class Server {
     private static Server instance;
@@ -16,6 +20,9 @@ public class Server {
             instance = new Server();
         return instance;
     }
+    private String accessToken;
+    private String refreshToken;
+    private PublicKey serverPublicKey;
     public String send(String req){
         FutureTask<String> future = new FutureTask<>(() -> {
             try(Socket socket = new Socket("vid16.online", 42000)){
@@ -35,4 +42,26 @@ public class Server {
             return "Exception: " + e.getMessage();
         }
     }
+    public String sendEncrypted(String req){
+        if(serverPublicKey == null)
+            serverPublicKey = AirportKeys.readPublicKey(send("getkey"));
+        byte[] encrypedRequest = AirportKeys.cipher(serverPublicKey, AirportKeys.ENCRYPT, req);
+        return send(new String(Base64.getEncoder().encode(encrypedRequest)));
+    }
+
+    public String login(String username, String password){
+        String answer = sendEncrypted("login " + username + " " + password);
+        String[] tokens = answer.split(" ");
+        accessToken = tokens[0];
+        refreshToken = tokens[1];
+        return answer;
+    }
+    public void register(String username, String password){
+        sendEncrypted("register " + username + " " + password);
+    }
+
+    public String sendWithJWT(String req){
+        return send(accessToken + " " + req);
+    }
+
 }

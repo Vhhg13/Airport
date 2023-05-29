@@ -6,4 +6,67 @@
     android:layout_height="match_parent"
     tools:context=".RegActivity">
 
+    <EditText
+        android:id="@+id/login"
+        android:layout_margin="20dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/pwd"
+        android:autofillHints="Логин"
+        android:inputType="text"
+        android:hint="@string/login_hint"/>
+    <EditText
+        android:id="@+id/pwd"
+        android:layout_margin="20dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/pwdagain"
+        android:autofillHints="Пароль"
+        android:inputType="text"
+        android:hint="@string/pwd_hint"/>
+    <EditText
+        android:id="@+id/pwdagain"
+        android:layout_margin="20dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/pwd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/consent"
+        android:autofillHints="Пароль"
+        android:inputType="text"
+        android:hint="@string/pwdagain_hint"/>
+
+    <CheckBox
+        android:id="@+id/consent"
+        android:text="@string/iconsent"
+        android:layout_margin="20dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/pwd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button"/>
+
+    <Button
+        android:id="@+id/button"
+        android:text="@string/register_button"
+        android:layout_margin="20dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/consent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

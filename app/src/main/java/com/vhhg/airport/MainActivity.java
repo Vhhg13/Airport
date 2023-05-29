@@ -1,6 +1,8 @@
 package com.vhhg.airport;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Xml;
@@ -32,33 +34,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button btn = findViewById(R.id.send);
         EditText et = findViewById(R.id.input);
-        TextView tw = findViewById(R.id.tw);
-        PublicKey[] publicKey = new PublicKey[1];
+        RecyclerView recyclerView = findViewById(R.id.recycler);
+
         btn.setOnClickListener(v -> {
-            publicKey[0] = AirportKeys.readPublicKey(Server.get().send("getkey"));
-            String message = et.getText().toString();
-            byte[] encrypted = AirportKeys.cipher(publicKey[0], AirportKeys.ENCRYPT, message);
-            String answer = Server.get().send(new String(Base64.getEncoder().encode(encrypted)));
-            XmlPullParser parser = Xml.newPullParser();
+            String answer = Server.get().sendWithJWT(et.getText().toString());
             try {
-                parser.setInput(new StringReader(answer));
-                StringBuilder sb = new StringBuilder();
-                while(parser.getEventType()!=XmlPullParser.END_DOCUMENT){
-                    if(parser.getEventType() == XmlPullParser.START_TAG
-                            && parser.getName().equalsIgnoreCase("item")){
-                        sb.append(parser.getAttributeValue(0));
-                    }
-                    if(parser.getEventType() == XmlPullParser.TEXT){
-                        sb.append(parser.getText());
-                    }
-                    parser.next();
-                }
-                tw.setText(sb.toString());
-            } catch (XmlPullParserException | IOException e) {
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Flight[] flights = Flight.arrayFrom(answer);
+                FlightListAdapter adapter = new FlightListAdapter(this, flights);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            }catch(XmlPullParserException | IOException e){
+                Toast.makeText(this, "Error parsing xml", Toast.LENGTH_SHORT).show();
             }
-
-
         });
     }
 }
