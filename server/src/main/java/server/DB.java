@@ -21,19 +21,23 @@ public class DB {
         st = connection.createStatement();
         st.setQueryTimeout(30);
         boolean usersExist = false,
-                flightsExist = false;
+                flightsExist = false,
+                favsExist = false;
         try(ResultSet rs = st.executeQuery("SELECT name FROM sqlite_master")){
             while(rs.next()){
-                if(rs.getString("name").equals("user")){
+                String name = rs.getString("name");
+                if(name.equals("user"))
                     usersExist = true;
-                }else if(rs.getString("name").equals("flight")){
+                else if(name.equals("flight"))
                     flightsExist = true;
-                }
+                else if(name.equals("favs"))
+                    favsExist = true;
             }
         }
         if(!usersExist){
             st.execute("CREATE TABLE user ( " +
-                    "username text PRIMARY KEY, " +
+                    "id integer PRIMARY KEY, " +
+                    "username text, " +
                     "password text, " +
                     "refresh text, " +
                     "refresh_date integer)");
@@ -45,9 +49,22 @@ public class DB {
                     "dest VARCHAR(20)," +
                     "date integer)");
         }
+        if(!favsExist){
+            st.execute("CREATE TABLE favs ( " +
+                    "user integer," +
+                    "flight integer," +
+                    "FOREIGN KEY (user) REFERENCES user (id)," +
+                    "FOREIGN KEY (flight) REFERENCES flight (ID))");
+        }
         try(ResultSet rs = st.executeQuery("SELECT ID FROM flight ORDER BY ID DESC")){
             if(rs.next())
                 lastId = rs.getInt("ID");
+            else
+                lastId = 100;
+        }
+        try(ResultSet rs = st.executeQuery("SELECT id FROM user ORDER BY ID DESC")){
+            if(rs.next())
+                lastId = Math.max(lastId, rs.getInt("ID"));
             else
                 lastId = 100;
         }

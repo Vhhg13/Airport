@@ -11,6 +11,8 @@ import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Random;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import keys.AirportKeys;
@@ -22,21 +24,78 @@ public class Authenticator {
             instance = new Authenticator();
         return instance;
     }
-    private Authenticator(){
-
-    }
+    private Authenticator(){}
     public String register(String username, String password) throws SQLException{
-        try(ResultSet rs = DB.get().executeQuery("SELECT * FROM user WHERE UPPER(username)=\"%s\"", username)){
+        try(ResultSet rs = DB.get().executeQuery("SELECT * FROM user WHERE UPPER(username)=UPPER(\"%s\")", username)){
             if(!rs.next()){
                 String passwdHash = BCrypt.withDefaults().hashToString(12, password.toCharArray());
-                DB.get().executeUpdate("INSERT INTO user VALUES (\"%s\", \"%s\", \"\", \"\")", username, passwdHash);
+                DB.get().executeUpdate("INSERT INTO user VALUES (%d, \"%s\", \"%s\", \"\", \"\")", DB.get().newId(), username, passwdHash);
                 return "Successfully registered";
             }
             return "Already registered";
         }
     }
-    public String login(String username, String password){
-        return "Logged in " + username + " with password " + password;
+    public String login(String login, String passwd) throws SQLException{
+        try(ResultSet rs = DB.get().executeQuery("SELECT password FROM user WHERE UPPER(username)=UPPER(\"%s\")", login)){
+            if(!rs.next()){
+                return "No such user";
+            }else{
+                if (BCrypt.verifyer().verify(passwd.toCharArray(), rs.getString("password").toCharArray()).verified){
+                    long date = new Date().getTime();
+                    DB.get().executeUpdate(String.format(Locale.getDefault(),
+                            "UPDATE user SET refresh_date = %d WHERE username = \"%s\"", date, login));
+                    Thread.sleep(1000);
+                    String jwt = createJWT(login);
+                    String refresh = createRefresh(jwt);
+                    DB.get().executeUpdate("UPDATE user SET refresh = \"%s\" WHERE username = \"%s\"", refresh, login);
+                    return jwt + " " + refresh;
+                } else {
+                    return "Invalid password";
+                }
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String refresh(String token, String refresh) throws SQLException{
+        DecodedJWT jwt = validateJWT(token);
+        String login = jwt.getClaim("usr").asString();
+        try(ResultSet rs = DB.get().executeQuery("SELECT refresh FROM user WHERE username = \"%s\"", login)){
+            if(rs.next() && rs.getString("refresh").equals(refresh)){
+                DB.get().executeUpdate("UPDATE user SET refresh_date = %d", new Date().getTime());
+                Thread.sleep(1000);
+                String new_jwt = createJWT(login);
+                String new_refresh = createRefresh(new_jwt);
+                DB.get().executeUpdate("UPDATE user SET refresh = \"%s\" WHERE username = \"%s\"", new_refresh, login);
+                return new_jwt + " " + new_refresh;
+            }else{
+                System.out.println("E: Refresh denied");
+                return "Refresh denied";
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String createRefresh(String jwt) {
+        StringBuilder refresh = new StringBuilder(10);
+        Random rnd = new Random();
+        for(int i=0;i<10;++i)
+            refresh.append(jwt.charAt(rnd.nextInt(jwt.length())));
+        return refresh.toString();
+    }
+
+    public String createJWT(String user){
+        File pri = new File(Airport.privKeyFile);
+        Algorithm algorithm = Algorithm.HMAC512(AirportKeys.readPrivateKey(pri).getEncoded());
+        String token = JWT.create()
+                .withIssuer("AirportInfoSystem")
+                .withExpiresAt(new Date(new Date().getTime()+15*60*1000))
+                .withClaim("usr", user)
+                .withIssuedAt(new Date())
+                .sign(algorithm);
+        return token;
     }
     public DecodedJWT validateJWT(String token) throws SQLException {
         File pri = new File(Airport.privKeyFile);

@@ -1,5 +1,6 @@
 package server;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.io.BufferedReader;
@@ -51,6 +52,9 @@ public class Airport {
                         }catch (SQLException sql){
                             sql.printStackTrace();
                             answer = "SQLException";
+                        }catch(JWTVerificationException e){
+                            e.printStackTrace();
+                            answer = "Invalid JWT";
                         }
                         out.write(answer + "\n");
                         System.out.println("Sent to client: " + answer);
@@ -108,10 +112,13 @@ public class Airport {
             if(cmdlets.size()<3) return "Not 3 args";
             return Authenticator.get().login(cmdlets.get(1), cmdlets.get(2));
         }
+        if(cmd.equalsIgnoreCase("refresh")){
+            return Authenticator.get().refresh(cmdlets.get(1), cmdlets.get(2));
+        }
 
-        //String jwtString = cmdlets.pollFirst();
-        //DecodedJWT jwt = Authenticator.get().validateJWT(jwtString);
-        //cmd = cmdlets.get(0);
+        String jwtString = cmdlets.pollFirst();
+        DecodedJWT jwt = Authenticator.get().validateJWT(jwtString);
+        cmd = cmdlets.get(0);
 
         if(cmd.equalsIgnoreCase("getall"))
             try(ResultSet rs = DB.get().executeQuery("SELECT * FROM flight")) {
@@ -123,6 +130,9 @@ public class Airport {
                     DB.get().newId(), cmdlets.get(1), cmdlets.get(2), new Date().getTime());
             return "Added";
         }
+
+        if(cmd.equalsIgnoreCase("mark"))
+            return FavoritesMarker.get().mark(jwt, Integer.parseInt(cmdlets.get(1)));
 
 
 
