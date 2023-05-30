@@ -26,6 +26,9 @@ import keys.AirportKeys;
 public class Airport {
     private static PublicKey serverPublicKey;
     private static PrivateKey serverPrivateKey;
+    public static PrivateKey getServerPrivateKey(){
+        return serverPrivateKey;
+    }
     public static final String pubKeyFile = "airportserverkey.pub";
     public static final String privKeyFile = "airportserverkey";
     public static void main(String[] args) {
@@ -51,6 +54,8 @@ public class Airport {
                             answer = processCommand(command);
                         }catch (SQLException sql){
                             sql.printStackTrace();
+                            System.out.println("SQL Queries:");
+                            DB.get().printQueries();
                             answer = "SQLException";
                         }catch(JWTVerificationException e){
                             e.printStackTrace();
@@ -121,18 +126,29 @@ public class Airport {
         cmd = cmdlets.get(0);
 
         if(cmd.equalsIgnoreCase("getall"))
-            try(ResultSet rs = DB.get().executeQuery("SELECT * FROM flight")) {
+            try(ResultSet rs = DB.get().executeQuery("SELECT flight.*, SUM(favs.user=101) FROM flight LEFT JOIN favs ON favs.flight=flight.ID GROUP BY ID")) {
+                return ResponseGenerator.getall(rs);
+            }
+
+        if(cmd.equalsIgnoreCase("getfavs"))
+            try(ResultSet rs = DB.get().executeQuery("SELECT *, 1 FROM flight WHERE ID in " +
+                    "(SELECT flight FROM favs WHERE user = (SELECT id FROM user WHERE username = \"%s\"))", jwt.getClaim("usr").asString())){
                 return ResponseGenerator.getall(rs);
             }
 
         if(cmd.equalsIgnoreCase("addflight")){
-            if(cmdlets.size() == 2)
+            if(cmdlets.size() == 3)
                 DB.get().executeUpdate("INSERT INTO flight VALUES(%d, \"%s\", \"%s\", %d, %d, %d)",
                         DB.get().newId(), cmdlets.get(1), cmdlets.get(2), new Date().getTime(), new Date().getTime(), (int)(Math.random()*10000));
             else
                 DB.get().executeUpdate("INSERT INTO flight VALUES(%d, \"%s\", \"%s\", %d, %d, %d)",
                         DB.get().newId(), cmdlets.get(1), cmdlets.get(2), cmdlets.get(3), cmdlets.get(4), cmdlets.get(5));
             return "Added";
+        }
+
+        if(cmd.equalsIgnoreCase("removeflight")){ // removeflight ID
+            DB.get().executeUpdate("DELETE FROM flight WHERE ID = %d", Integer.parseInt(cmdlets.get(1)));
+            return "Removed";
         }
 
         if(cmd.equalsIgnoreCase("mark"))

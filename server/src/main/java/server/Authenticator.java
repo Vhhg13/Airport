@@ -59,28 +59,32 @@ public class Authenticator {
     }
 
     public String refresh(String token, String refresh) throws SQLException{
-        DecodedJWT jwt = validateJWT(token);
-        String login = jwt.getClaim("usr").asString();
-        try(ResultSet rs = DB.get().executeQuery("SELECT refresh FROM user WHERE username = \"%s\"", login)){
-            if(rs.next() && rs.getString("refresh").equals(refresh)){
-                DB.get().executeUpdate("UPDATE user SET refresh_date = %d", new Date().getTime());
-                Thread.sleep(1000);
-                String new_jwt = createJWT(login);
-                String new_refresh = createRefresh(new_jwt);
-                DB.get().executeUpdate("UPDATE user SET refresh = \"%s\" WHERE username = \"%s\"", new_refresh, login);
-                return new_jwt + " " + new_refresh;
-            }else{
-                System.out.println("E: Refresh denied");
-                return "Refresh denied";
+        String refreshToBe = createRefresh(token);
+        if(refreshToBe.equals(refresh)){
+            try(ResultSet rs = DB.get().executeQuery("SELECT username FROM user WHERE refresh = \"%s\"", refresh)){
+                if(rs.next()) {
+                    String username = rs.getString("username");
+                    DB.get().executeUpdate("UPDATE user SET refresh_date = %d WHERE username = \"%s\"", new Date().getTime(), username);
+                    Thread.sleep(1000);
+                    String new_jwt = createJWT(username);
+                    String new_refresh = createRefresh(new_jwt);
+                    DB.get().executeUpdate("UPDATE user SET refresh = \"%s\" WHERE username = \"%s\"", new_refresh, username);
+                    return new_jwt + " " + new_refresh;
+                }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
+        System.out.println("E: Refresh denied");
+        return "Refresh denied";
     }
 
     private String createRefresh(String jwt) {
         StringBuilder refresh = new StringBuilder(10);
-        Random rnd = new Random();
+        long seed = 0;
+        for(byte b : Airport.getServerPrivateKey().getEncoded())
+            seed += b;
+        Random rnd = new Random(seed);
         for(int i=0;i<10;++i)
             refresh.append(jwt.charAt(rnd.nextInt(jwt.length())));
         return refresh.toString();

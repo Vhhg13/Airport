@@ -1,8 +1,12 @@
 #!/usr/bin/python3
 import sqlite3
 import time
+import sys
 
-db = sqlite3.connect("/home/maxx/Airport/__airport.db")
+if(len(sys.argv) > 1):
+    db = sqlite3.connect(sys.argv[1])
+else:
+    db = sqlite3.connect("/home/maxx/Airport/__airport.db")
 c = db.cursor()
 
 print("Content-Type: text/html\n\n<pre>")

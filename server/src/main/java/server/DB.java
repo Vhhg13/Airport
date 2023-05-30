@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
 
 public class DB {
     private static DB instance;
@@ -16,8 +17,13 @@ public class DB {
     private final Connection connection;
     private final Statement st;
     private int lastId;
+    private LinkedList<String> queries = new LinkedList<>();
+    public void printQueries(){
+        for(String s : queries)
+            System.out.println(s);
+    }
     private DB() throws SQLException{
-        connection = DriverManager.getConnection("jdbc:sqlite:/home/maxx/Airport/__airport.db");
+        connection = DriverManager.getConnection("jdbc:sqlite:__airport.db");
         st = connection.createStatement();
         st.setQueryTimeout(30);
         boolean usersExist = false,
@@ -72,9 +78,11 @@ public class DB {
         }
     }
     public void executeUpdate(String update) throws SQLException{
+        queries.add(update);
         st.executeUpdate(update);
     }
     public ResultSet executeQuery(String query) throws SQLException{
+        queries.add(query);
         return st.executeQuery(query);
     }
     public ResultSet executeQuery(String query, Object...args) throws SQLException{
