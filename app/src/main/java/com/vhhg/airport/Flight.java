@@ -19,14 +19,16 @@ public class Flight {
     private final Date depart;
     private final Date arrive;
     private final double price;
+    private final boolean fav;
 
-    public Flight(int ID, String from, String to, Date depart, Date arrive, double price) {
+    public Flight(int ID, String from, String to, Date depart, Date arrive, double price, boolean fav) {
         this.ID = ID;
         this.from = from;
         this.to = to;
         this.depart = depart;
         this.arrive = arrive;
         this.price = price;
+        this.fav = fav;
     }
     public static Flight[] arrayFrom(String xml)throws XmlPullParserException, IOException{
         LinkedList<Flight> lst = new LinkedList<>();
@@ -35,6 +37,7 @@ public class Flight {
         int ID=42, price=42;
         String from="Error parsing", to="Error parsing";
         Date depart=new Date(), arrive=new Date();
+        boolean fav = false;
         while(parser.getEventType()!=XmlPullParser.END_DOCUMENT){
             int evtType = parser.getEventType();
             String name = parser.getName();
@@ -47,7 +50,8 @@ public class Flight {
                 depart = new Date(Integer.parseInt(parser.getAttributeValue(3)));
                 arrive = new Date(Integer.parseInt(parser.getAttributeValue(4)));
                 price = Integer.parseInt(parser.getAttributeValue(5));
-                lst.add(new Flight(ID, from, to, depart, arrive, price));
+                fav = parser.getAttributeValue(6).equals("1");
+                lst.add(new Flight(ID, from, to, depart, arrive, price, fav));
             }
             parser.next();
         }
@@ -80,5 +84,6 @@ public class Flight {
     public double getPrice() {
         return price;
     }
+    public boolean isFav(){ return fav; }
 
 }

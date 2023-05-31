@@ -23,6 +23,10 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.mainText.setText(flights[position].getTo());
         holder.bottomText.setText(flights[position].getDepart().toString());
+        holder.fav.setChecked(flights[position].isFav());
+        holder.fav.setOnClickListener( v -> {
+
+        });
     }
 
     @Override

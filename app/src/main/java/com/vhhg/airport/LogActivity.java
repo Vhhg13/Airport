@@ -21,12 +21,13 @@ public class LogActivity extends AppCompatActivity {
         button.setOnClickListener(v -> {
             String username = login.getText().toString();
             String password = pwd.getText().toString();
-            String response = Server.get().login(username, password);
-            if(response.charAt(0) == 'e'){
-                startActivity(new Intent(this, MainActivity.class));
-            }else{
-                Snackbar.make(this, v, response, Snackbar.LENGTH_LONG).show();
-            }
+            Server.get().sendEncryptedAsync(String.format("register %s %s", username, password), response -> {
+                if(response.charAt(0) == 'e'){
+                    startActivity(new Intent(this, AllActivity.class));
+                }else{
+                    Snackbar.make(this, v, response, Snackbar.LENGTH_LONG).show();
+                }
+            });
         });
     }
 }
