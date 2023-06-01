@@ -1,0 +1,12 @@
+- name: Remove Airport db
+  hosts: featherserver
+  remote_user: maxx
+  vars:
+    ansible_port: 34
+  tasks:
+    - name: Clear Airport log
+      shell: echo > /home/maxx/Airport/__airport.db
+    - name: Restart server
+      shell: /home/maxx/Airport/runairport ansible
+      async: 10
+      poll: 0
