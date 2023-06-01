@@ -17,7 +17,7 @@ public class DB {
     private final Connection connection;
     private final Statement st;
     private int lastId;
-    private LinkedList<String> queries = new LinkedList<>();
+    private final LinkedList<String> queries = new LinkedList<>();
     public void printQueries(){
         for(String s : queries)
             System.out.println(s);

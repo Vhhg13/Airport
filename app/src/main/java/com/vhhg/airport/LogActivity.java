@@ -9,6 +9,8 @@ import android.widget.EditText;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.function.Consumer;
+
 public class LogActivity extends AppCompatActivity {
 
     @Override
@@ -21,12 +23,11 @@ public class LogActivity extends AppCompatActivity {
         button.setOnClickListener(v -> {
             String username = login.getText().toString();
             String password = pwd.getText().toString();
-            Server.get().sendEncryptedAsync(String.format("register %s %s", username, password), response -> {
-                if(response.charAt(0) == 'e'){
-                    startActivity(new Intent(this, AllActivity.class));
-                }else{
-                    Snackbar.make(this, v, response, Snackbar.LENGTH_LONG).show();
-                }
+            Server.get().login(username, password, (Consumer<Server.StringHolder>) response -> {
+                if(response.getString().charAt(0) == 'e')
+                    startActivity(new Intent(this, MainMenuActivity.class));
+                else
+                    Snackbar.make(this, v, response.getString(), Snackbar.LENGTH_LONG).show();
             });
         });
     }

@@ -19,5 +19,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
         register.setOnClickListener(v -> startActivity(new Intent(this, RegActivity.class)));
         login.setOnClickListener(v -> startActivity(new Intent(this, LogActivity.class)));
+        woregister.setOnClickListener(v -> startActivity(new Intent(this, AllActivity.class)));
     }
 }

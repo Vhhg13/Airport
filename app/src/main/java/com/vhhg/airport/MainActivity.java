@@ -36,16 +36,17 @@ public class MainActivity extends AppCompatActivity {
         EditText et = findViewById(R.id.input);
         RecyclerView recyclerView = findViewById(R.id.recycler);
 
-        btn.setOnClickListener(v -> {
-            String answer = Server.get().sendWithJWT(et.getText().toString());
-            try {
-                Flight[] flights = Flight.arrayFrom(answer);
-                FlightListAdapter adapter = new FlightListAdapter(this, flights);
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            }catch(XmlPullParserException | IOException e){
-                Toast.makeText(this, "Error parsing xml", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        btn.setOnClickListener(v -> {
+//            //String answer = Server.get().sendWithJWT(et.getText().toString());
+//            String answer = "";
+//            try {
+//                Flight[] flights = Flight.arrayFrom(answer);
+//                FlightListAdapter adapter = new FlightListAdapter(this, flights);
+//                recyclerView.setAdapter(adapter);
+//                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//            }catch(XmlPullParserException | IOException e){
+//                Toast.makeText(this, "Error parsing xml", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 }

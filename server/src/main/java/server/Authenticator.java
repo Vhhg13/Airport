@@ -95,7 +95,7 @@ public class Authenticator {
         Algorithm algorithm = Algorithm.HMAC512(AirportKeys.readPrivateKey(pri).getEncoded());
         String token = JWT.create()
                 .withIssuer("AirportInfoSystem")
-                .withExpiresAt(new Date(new Date().getTime()+15*60*1000))
+                .withExpiresAt(new Date(new Date().getTime()+60*1000))
                 .withClaim("usr", user)
                 .withIssuedAt(new Date())
                 .sign(algorithm);

@@ -1,6 +1,7 @@
 package com.vhhg.airport;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,10 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.ViewHolder> {
+    public static final String FLIGHTINFO = "com.vhhg.FlightListAdapter.FlightInfo";
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -21,24 +25,32 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.mainText.setText(flights[position].getTo());
-        holder.bottomText.setText(flights[position].getDepart().toString());
-        holder.fav.setChecked(flights[position].isFav());
+        holder.mainText.setText(flights.get(position).getTo());
+        holder.bottomText.setText(flights.get(position).getDepart().toString());
+        holder.fav.setChecked(flights.get(position).isFav());
+        holder.info.setOnClickListener(v -> {
+            Intent intent = new Intent(context, FlightInfoActivity.class);
+            intent.putExtra(FLIGHTINFO, flights.get(position));
+            context.startActivity(intent);
+        });
         holder.fav.setOnClickListener( v -> {
-
+            Flight flight = flights.get(position);
+            flight.setFav(!flight.isFav());
+            holder.fav.setChecked(flight.isFav());
+            Server.get().mark(flights.get(position).getID(), res -> {});
         });
     }
 
     @Override
     public int getItemCount() {
-        return flights.length;
+        return flights.size();
     }
 
     private final Context context;
-    private final Flight[] flights;
+    private final List<Flight> flights;
     private LayoutInflater inflater;
 
-    public FlightListAdapter(@NonNull Context context, Flight[] elements) {
+    public FlightListAdapter(@NonNull Context context, List<Flight> elements) {
         this.context = context;
         this.flights = elements;
         inflater = LayoutInflater.from(context);

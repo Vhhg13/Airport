@@ -14,4 +14,8 @@
     <string name="forgor">Забыли пароль?</string>
     <string name="have_to_consent">Нужно согласиться с правилами</string>
     <string name="passwords_dont_match">Пароли не совпадают</string>
+    <string name="all_flights">Все рейсы</string>
+    <string name="departures">Вылеты</string>
+    <string name="arrivals">Прилёты</string>
+    <string name="favorites">Избранное</string>
 </resources>

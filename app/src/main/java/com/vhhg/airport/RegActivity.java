@@ -23,19 +23,24 @@ public class RegActivity extends AppCompatActivity {
         CheckBox checkBox = findViewById(R.id.consent);
         Button button = findViewById(R.id.button);
         button.setOnClickListener(v -> {
-            if(checkBox.isChecked()){
-                String username = login.getText().toString();
-                String password = pwd.getText().toString();
-                String pwd2 = pwdAgain.getText().toString();
-                if(password.equals(pwd2)){
-                    Server.get().register(username, password);
-                    Server.get().login(username, password);
-                    startActivity(new Intent(this, MainActivity.class));
-                }else
-                    Snackbar.make(this, v, getResources().getString(R.string.passwords_dont_match), Snackbar.LENGTH_SHORT).show();
-
-            }else
+            if(!checkBox.isChecked()) {
                 Snackbar.make(this, v, getResources().getString(R.string.have_to_consent), Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+            String username = login.getText().toString();
+            String password = pwd.getText().toString();
+            String pwd2 = pwdAgain.getText().toString();
+            if(!password.equals(pwd2)) {
+                Snackbar.make(this, v, getResources().getString(R.string.passwords_dont_match), Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+            Server.get().register(username, password, response -> {});
+            Server.get().login(username, password, response -> {
+                if(response.getString().charAt(0) == 'e')
+                    startActivity(new Intent(this, MainMenuActivity.class));
+                else
+                    Snackbar.make(getApplicationContext(), v, response.getString(), Snackbar.LENGTH_SHORT).show();
+            });
         });
     }
 }

@@ -8,18 +8,19 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.util.Date;
 import java.util.LinkedList;
 
-public class Flight {
+public class Flight implements Serializable {
     private final int ID;
     private final String from;
     private final String to;
     private final Date depart;
     private final Date arrive;
     private final double price;
-    private final boolean fav;
+    private boolean fav;
 
     public Flight(int ID, String from, String to, Date depart, Date arrive, double price, boolean fav) {
         this.ID = ID;
@@ -60,6 +61,32 @@ public class Flight {
             flights[i] = lst.pollFirst();
         return flights;
     }
+    public static void listFrom(String xml, LinkedList<Flight> lst) throws XmlPullParserException, IOException{
+        lst.clear();
+        XmlPullParser parser = Xml.newPullParser();
+        parser.setInput(new StringReader(xml));
+        int ID=42, price=42;
+        String from="Error parsing", to="Error parsing";
+        Date depart=new Date(), arrive=new Date();
+        boolean fav = false;
+        while(parser.getEventType()!=XmlPullParser.END_DOCUMENT){
+            int evtType = parser.getEventType();
+            String name = parser.getName();
+            if(evtType == XmlPullParser.START_TAG
+                    && name.equalsIgnoreCase("flight")){
+                int count = parser.getAttributeCount();
+                ID = Integer.parseInt(parser.getAttributeValue(0));
+                from = parser.getAttributeValue(1);
+                to = parser.getAttributeValue(2);
+                depart = new Date(Integer.parseInt(parser.getAttributeValue(3)));
+                arrive = new Date(Integer.parseInt(parser.getAttributeValue(4)));
+                price = Integer.parseInt(parser.getAttributeValue(5));
+                fav = parser.getAttributeValue(6).equals("1");
+                lst.add(new Flight(ID, from, to, depart, arrive, price, fav));
+            }
+            parser.next();
+        }
+    }
 
     public int getID() {
         return ID;
@@ -86,4 +113,7 @@ public class Flight {
     }
     public boolean isFav(){ return fav; }
 
+    public void setFav(boolean fav) {
+        this.fav = fav;
+    }
 }

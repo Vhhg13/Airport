@@ -8,27 +8,53 @@
 
     <Button
         android:id="@+id/all"
+        android:text="@string/all_flights"
+        android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/departures"/>
+        app:layout_constraintBottom_toTopOf="@+id/departures"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.3"/>
+
     <Button
         android:id="@+id/departures"
+        android:text="@string/departures"
+        android:layout_margin="15dp"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/all"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/arrivals"/>
+
     <Button
         android:id="@+id/arrivals"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
+        android:layout_margin="15dp"
+        android:text="@string/arrivals"
         app:layout_constraintTop_toBottomOf="@+id/departures"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/favs"
+        />
+
+    <Button
+        android:id="@+id/favs"
+        android:text="@string/favorites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/arrivals"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
