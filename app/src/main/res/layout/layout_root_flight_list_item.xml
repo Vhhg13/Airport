@@ -40,6 +40,17 @@
         app:layout_constraintBottom_toTopOf="@+id/bottom_line"/>
 
     <androidx.appcompat.widget.AppCompatButton
+        android:background="@drawable/pen"
+        android:id="@+id/edit"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toBottomOf="@id/top_line"
+        app:layout_constraintEnd_toStartOf="@+id/info"
+        app:layout_constraintBottom_toTopOf="@id/bottom_line"
+        app:layout_constraintVertical_bias="0.45"/>
+
+    <androidx.appcompat.widget.AppCompatButton
         android:background="@drawable/info"
 
         android:id="@+id/info"
@@ -47,14 +58,14 @@
         android:layout_height="30dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintTop_toTopOf="@id/top_line"
-        app:layout_constraintEnd_toStartOf="@+id/fav"
+        app:layout_constraintEnd_toStartOf="@+id/del"
         app:layout_constraintBottom_toTopOf="@+id/bottom_line"
         />
-    <ToggleButton
-        android:id="@+id/fav"
-        android:background="@drawable/star_toggle"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/del"
+        android:background="@drawable/trash"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
         android:textOn=""
         android:textOff=""
         app:layout_constraintEnd_toEndOf="@id/top_line"

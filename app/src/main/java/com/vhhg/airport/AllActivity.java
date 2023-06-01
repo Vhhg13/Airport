@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -22,7 +23,13 @@ public class AllActivity extends AppCompatActivity {
         RecyclerView recycler = findViewById(R.id.recycler);
         LinkedList<Flight> flights = new LinkedList<>();
         recycler.setLayoutManager(new LinearLayoutManager(this));
-        FlightListAdapter adapter = new FlightListAdapter(this, flights);
+        RecyclerView.Adapter adapter;
+
+        if(getIntent().getStringExtra(LogActivity.ISROOT) != null && getIntent().getStringExtra(LogActivity.ISROOT).equals("NO"))
+            adapter = new RootFlightListAdapter(this, flights);
+        else
+            adapter = new FlightListAdapter(this, flights);
+
         recycler.setAdapter(adapter);
         try {
             Server.get().getall(response -> {

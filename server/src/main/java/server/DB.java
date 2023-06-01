@@ -46,7 +46,10 @@ public class DB {
                     "username text, " +
                     "password text, " +
                     "refresh text, " +
-                    "refresh_date integer)");
+                    "refresh_date integer, " +
+                    "first_name VARCHAR(20)," +
+                    "last_name VARCHAR(20)," +
+                    "third_name VARCHAR(20))");
         }
         if(!flightsExist){
             st.execute("CREATE TABLE flight (" +

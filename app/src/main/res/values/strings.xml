@@ -18,4 +18,15 @@
     <string name="departures">Вылеты</string>
     <string name="arrivals">Прилёты</string>
     <string name="favorites">Избранное</string>
+    <string name="change_profile_data">Изменить</string>
+    <string name="log_out_profile">Выйти</string>
+    <string name="find_flight">Найти рейс</string>
+    <string name="add_flight">Добавить рейс</string>
+    <string name="users">Пользователи</string>
+    <string name="save_edits">Сохранить</string>
+    <string name="departure_airport">Аэропорт отправления</string>
+    <string name="arrival_airport">Аэропорт прибытия</string>
+    <string name="departure_time">Время вылета</string>
+    <string name="arrival_time">Время прибытия</string>
+    <string name="price">Цена</string>
 </resources>

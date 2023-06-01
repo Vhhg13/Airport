@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -60,7 +61,7 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Vi
 
         TextView mainText = itemView.findViewById(R.id.destpoint);
         TextView bottomText = itemView.findViewById(R.id.status);
-        ImageButton info = itemView.findViewById(R.id.info);
+        Button info = itemView.findViewById(R.id.info);
         ToggleButton fav = itemView.findViewById(R.id.fav);
 
         public ViewHolder(@NonNull View itemView) {
