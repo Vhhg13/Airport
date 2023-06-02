@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/pwdagain"
         android:autofillHints="Пароль"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:hint="@string/pwd_hint"/>
     <EditText
         android:id="@+id/pwdagain"
@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/consent"
         android:autofillHints="Пароль"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:hint="@string/pwdagain_hint"/>
 
     <CheckBox

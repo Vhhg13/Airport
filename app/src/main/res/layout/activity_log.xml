@@ -29,7 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:autofillHints="Пароль"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:hint="@string/pwd_hint"/>
 
     <TextView
