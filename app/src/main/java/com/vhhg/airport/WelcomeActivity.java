@@ -17,8 +17,27 @@ public class WelcomeActivity extends AppCompatActivity {
         Button login = findViewById(R.id.login);
         Button woregister = findViewById(R.id.woregister);
 
-        register.setOnClickListener(v -> startActivity(new Intent(this, RegActivity.class)));
-        login.setOnClickListener(v -> startActivity(new Intent(this, LogActivity.class)));
-        woregister.setOnClickListener(v -> startActivity(new Intent(this, AllActivity.class)));
+        String user = Server.get(this).checkWhetherSignedIn();
+        if(user.equals("root")) {
+            startActivity(new Intent(this, RootMenuActivity.class));
+            finish();
+            return;
+        } else if (!user.equals("")) {
+            startActivity(new Intent(this, MainMenuActivity.class));
+            finish();
+            return;
+        }
+        register.setOnClickListener(v -> {
+            startActivity(new Intent(this, RegActivity.class));
+            finish();
+        });
+        login.setOnClickListener(v -> {
+            startActivity(new Intent(this, LogActivity.class));
+            finish();
+        });
+        woregister.setOnClickListener(v -> {
+            startActivity(new Intent(this, AllActivity.class));
+            finish();
+        });
     }
 }

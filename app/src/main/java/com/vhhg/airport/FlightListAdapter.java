@@ -38,7 +38,7 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Vi
             Flight flight = flights.get(position);
             flight.setFav(!flight.isFav());
             holder.fav.setChecked(flight.isFav());
-            Server.get().mark(flights.get(position).getID(), res -> {});
+            Server.get(context).mark(flights.get(position).getID(), res -> {});
         });
     }
 

@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         Button btn = findViewById(R.id.send);
         EditText et = findViewById(R.id.input);
         RecyclerView recyclerView = findViewById(R.id.recycler);
-
 //        btn.setOnClickListener(v -> {
 //            //String answer = Server.get().sendWithJWT(et.getText().toString());
 //            String answer = "";

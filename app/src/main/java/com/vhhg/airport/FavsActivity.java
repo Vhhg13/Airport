@@ -26,7 +26,7 @@ public class FavsActivity extends AppCompatActivity {
         FlightListAdapter adapter = new FlightListAdapter(this, flights);
         recycler.setAdapter(adapter);
         try {
-            Server.get().getFavs(response -> {
+            Server.get(this).getFavs(response -> {
                 try {
                     Flight.listFrom(response.getString(), flights);
                     adapter.notifyDataSetChanged();

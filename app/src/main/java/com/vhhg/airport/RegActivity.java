@@ -34,8 +34,8 @@ public class RegActivity extends AppCompatActivity {
                 Snackbar.make(this, v, getResources().getString(R.string.passwords_dont_match), Snackbar.LENGTH_SHORT).show();
                 return;
             }
-            Server.get().register(username, password, response -> {});
-            Server.get().login(username, password, response -> {
+            Server.get(this).register(username, password, response -> {});
+            Server.get(this).login(username, password, response -> {
                 if(response.getString().charAt(0) == 'e')
                     startActivity(new Intent(this, MainMenuActivity.class));
                 else

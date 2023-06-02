@@ -32,7 +32,7 @@ public class AllActivity extends AppCompatActivity {
 
         recycler.setAdapter(adapter);
         try {
-            Server.get().getall(response -> {
+            Server.get(this).getall(response -> {
                 try {
                     Flight.listFrom(response.getString(), flights);
                     adapter.notifyDataSetChanged();

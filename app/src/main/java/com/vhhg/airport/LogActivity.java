@@ -24,7 +24,7 @@ public class LogActivity extends AppCompatActivity {
         button.setOnClickListener(v -> {
             String username = login.getText().toString();
             String password = pwd.getText().toString();
-            Server.get().login(username, password, (Consumer<Server.StringHolder>) response -> {
+            Server.get(this).login(username, password, (Consumer<Server.StringHolder>) response -> {
                 if(response.getString().charAt(0) == 'e') {
                     if(username.equals("root"))
                         startActivity(new Intent(this, RootMenuActivity.class));
