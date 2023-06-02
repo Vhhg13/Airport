@@ -16,7 +16,6 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -26,6 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         ImageView picture = findViewById(R.id.profile_pic);
 
+        String[] address = new String[1];
 
         TextView lastName = findViewById(R.id.lastname);
         TextView firstName = findViewById(R.id.firstname);
@@ -33,25 +33,20 @@ public class ProfileActivity extends AppCompatActivity {
 
         Button edit = findViewById(R.id.edit);
         Button signOut = findViewById(R.id.exit);
+
         try {
-            Server.get(this).getUserInfo(response -> {
-                try {
-                    User user = User.listFrom(response.getString()).get(0);
-                    Log.d("USERVHHG", user.toString());
-                    lastName.setText(user.getLastName());
-                    firstName.setText(user.getFirstName());
-                    thirdName.setText(user.getThirdName());
-                    String address = "http://vid16.online/userPictures/" + user.getProfilePic();
-                    Log.d("USERVHHG", address);
-                    Picasso.get().load(
-                            address
-                    ).into(picture);
-                } catch (XmlPullParserException | IOException e) {
-                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }).get();
-        } catch (ExecutionException | InterruptedException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            String sh = Server.get(this).getUserInfo(res -> {}).get().getString();
+            User user = User.listFrom(sh).get(0);
+            lastName.setText(user.getLastName());
+            firstName.setText(user.getFirstName());
+            thirdName.setText(user.getThirdName());
+            Picasso.get().load(
+                    "http://vid16.online/userPictures/" + user.getProfilePic()
+            ).into(picture);
+        } catch (XmlPullParserException | IOException | ExecutionException | InterruptedException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
+
     }
 }
