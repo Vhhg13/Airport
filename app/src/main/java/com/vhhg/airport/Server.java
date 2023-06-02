@@ -137,7 +137,7 @@ public class Server {
         accessToken = sp.getString("ACCESS", null);
         refreshToken = sp.getString("REFRESH", null);
         if(accessToken == null || refreshToken == null)
-            return null;
+            return "";
         try {
             String result = sendAsync("refresh " + accessToken + " " + refreshToken, response -> {
                 if(response.getString().charAt(0) == 'e'){
@@ -159,4 +159,13 @@ public class Server {
         return "";
     }
 
+    public void logout() {
+        SharedPreferences sp = context.getSharedPreferences("TOKENS", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove("ACCESS");
+        editor.remove("REFRESH");
+        editor.apply();
+        accessToken = null;
+        refreshToken = null;
+    }
 }

@@ -1,9 +1,12 @@
 package com.vhhg.airport;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 
 public class MainMenuActivity extends AppCompatActivity {
@@ -19,5 +22,24 @@ public class MainMenuActivity extends AppCompatActivity {
 
         all.setOnClickListener(v -> startActivity(new Intent(this, AllActivity.class)));
         favs.setOnClickListener(v -> startActivity(new Intent(this, FavsActivity.class)));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.user_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.favs)
+            startActivity(new Intent(this, FavsActivity.class));
+        else if(item.getItemId() == R.id.profile)
+            startActivity(new Intent(this, ProfileActivity.class));
+        else if(item.getItemId() == R.id.sign_out){
+            Server.get(this).logout();
+            startActivity(new Intent(this, WelcomeActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

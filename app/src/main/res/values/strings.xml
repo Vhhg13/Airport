@@ -29,4 +29,6 @@
     <string name="departure_time">Время вылета</string>
     <string name="arrival_time">Время прибытия</string>
     <string name="price">Цена</string>
+    <string name="menu_favs">Избранное</string>
+    <string name="menu_profile">Профиль</string>
 </resources>
