@@ -16,4 +16,17 @@ public class ResponseGenerator {
         sb.append("</response>");
         return sb.toString();
     }
+
+    public static String userInfo(ResultSet rs) throws SQLException{
+        StringBuilder sb = new StringBuilder();
+        sb.append("<response>");
+        while(rs.next()){
+            sb.append(String.format(Locale.getDefault(), "<user id=\"%s\" firstname=\"%s\" lastname=\"%s\" thirdname=\"%s\" profile_picture=\"%s\"/>",
+                    rs.getInt("ID"), rs.getString("first_name"),
+                    rs.getString("last_name"), rs.getString("third_name"),
+                    rs.getString("profile_picture")));
+        }
+        sb.append("</response>");
+        return sb.toString();
+    }
 }

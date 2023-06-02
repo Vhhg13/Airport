@@ -34,12 +34,13 @@ public class RegActivity extends AppCompatActivity {
                 Snackbar.make(this, v, getResources().getString(R.string.passwords_dont_match), Snackbar.LENGTH_SHORT).show();
                 return;
             }
-            Server.get(this).register(username, password, response -> {});
-            Server.get(this).login(username, password, response -> {
-                if(response.getString().charAt(0) == 'e')
-                    startActivity(new Intent(this, MainMenuActivity.class));
-                else
-                    Snackbar.make(getApplicationContext(), v, response.getString(), Snackbar.LENGTH_SHORT).show();
+            Server.get(this).register(username, password, response -> {
+                Server.get(this).login(username, password, response2 -> {
+                    if(response2.getString().charAt(0) == 'e')
+                        startActivity(new Intent(this, MainMenuActivity.class));
+                    else
+                        Snackbar.make(getApplicationContext(), v, response2.getString(), Snackbar.LENGTH_SHORT).show();
+                });
             });
         });
     }

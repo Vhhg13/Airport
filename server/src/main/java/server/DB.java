@@ -49,7 +49,8 @@ public class DB {
                     "refresh_date integer, " +
                     "first_name VARCHAR(20)," +
                     "last_name VARCHAR(20)," +
-                    "third_name VARCHAR(20))");
+                    "third_name VARCHAR(20)," +
+                    "profile_picture VARCHAR(10))");
         }
         if(!flightsExist){
             st.execute("CREATE TABLE flight (" +

@@ -154,7 +154,11 @@ public class Airport {
         if(cmd.equalsIgnoreCase("mark"))
             return FavoritesMarker.get().mark(jwt, Integer.parseInt(cmdlets.get(1)));
 
-
+        if(cmd.equalsIgnoreCase("getUserInfo")){
+            try(ResultSet rs = DB.get().executeQuery("SELECT * FROM user WHERE username = \"%s\"", jwt.getClaim("usr").asString())){
+                return ResponseGenerator.userInfo(rs);
+            }
+        }
 
 
         return "Command does not exist";

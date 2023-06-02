@@ -29,7 +29,8 @@ public class Authenticator {
         try(ResultSet rs = DB.get().executeQuery("SELECT * FROM user WHERE UPPER(username)=UPPER(\"%s\")", username)){
             if(!rs.next()){
                 String passwdHash = BCrypt.withDefaults().hashToString(12, password.toCharArray());
-                DB.get().executeUpdate("INSERT INTO user VALUES (%d, \"%s\", \"%s\", \"\", \"\", \"\", \"\", \"\")", DB.get().newId(), username, passwdHash);
+                int newId = DB.get().newId();
+                DB.get().executeUpdate("INSERT INTO user VALUES (%d, \"%s\", \"%s\", \"\", \"\", \"No First Name\", \"No Last Name\", \"No Third Name\", \"amogus.png\")", newId, username, passwdHash);
                 return "Successfully registered";
             }
             return "Already registered";

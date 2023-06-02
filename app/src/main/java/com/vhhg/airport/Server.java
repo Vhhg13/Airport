@@ -168,4 +168,7 @@ public class Server {
         accessToken = null;
         refreshToken = null;
     }
+    public CompletableFuture<StringHolder> getUserInfo(Consumer<StringHolder> callback){
+        return sendAsync(withAccessToken("getUserInfo"), callback);
+    }
 }
