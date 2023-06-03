@@ -171,4 +171,9 @@ public class Server {
     public CompletableFuture<StringHolder> getUserInfo(Consumer<StringHolder> callback){
         return sendAsync(withAccessToken("getUserInfo"), callback);
     }
+
+    public CompletableFuture<StringHolder> setUserInfo(User user){
+        String request = String.format("setUserInfo \"%s\" \"%s\" \"%s\"", user.getFirstName(), user.getLastName(), user.getThirdName());
+        return sendAsync(withAccessToken(request), res -> {});
+    }
 }

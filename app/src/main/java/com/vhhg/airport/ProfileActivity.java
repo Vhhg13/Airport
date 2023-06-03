@@ -1,10 +1,11 @@
 package com.vhhg.airport;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,13 +20,13 @@ import java.util.concurrent.ExecutionException;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    public static final String EDITPROFILE = "com.vhhg.airport.EDITPROFILE";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         ImageView picture = findViewById(R.id.profile_pic);
-
-        String[] address = new String[1];
 
         TextView lastName = findViewById(R.id.lastname);
         TextView firstName = findViewById(R.id.firstname);
@@ -33,20 +34,35 @@ public class ProfileActivity extends AppCompatActivity {
 
         Button edit = findViewById(R.id.edit);
         Button signOut = findViewById(R.id.exit);
-
+        User[] user = new User[1];
         try {
             String sh = Server.get(this).getUserInfo(res -> {}).get().getString();
-            User user = User.listFrom(sh).get(0);
-            lastName.setText(user.getLastName());
-            firstName.setText(user.getFirstName());
-            thirdName.setText(user.getThirdName());
+            user[0] = User.listFrom(sh).get(0);
+            lastName.setText(user[0].getLastName());
+            firstName.setText(user[0].getFirstName());
+            thirdName.setText(user[0].getThirdName());
             Picasso.get().load(
-                    "http://vid16.online/userPictures/" + user.getProfilePic()
+                    "http://vid16.online/userPictures/" + user[0].getProfilePic()
             ).into(picture);
         } catch (XmlPullParserException | IOException | ExecutionException | InterruptedException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
+        ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), res -> {
+            user[0] = (User) res.getData().getSerializableExtra(EDITPROFILE);
+            lastName.setText(user[0].getLastName());
+            firstName.setText(user[0].getFirstName());
+            thirdName.setText(user[0].getThirdName());
+            Picasso.get().load(
+                    "http://vid16.online/userPictures/" + user[0].getProfilePic()
+            ).into(picture);
+            Server.get(this).setUserInfo(user[0]);
+        });
 
+        edit.setOnClickListener(v -> {
+            Intent intent = new Intent(this, EditProfileActivity.class);
+            intent.putExtra(EDITPROFILE, user[0]);
+            launcher.launch(intent);
+        });
     }
 }

@@ -160,6 +160,14 @@ public class Airport {
             }
         }
 
+        if(cmd.equalsIgnoreCase("setUserInfo")){
+            DB.get().executeUpdate("UPDATE user SET first_name = \"%s\", last_name=\"%s\", third_name=\"%s\" WHERE username = \"%s\"",
+                    cmdlets.get(1), cmdlets.get(2), cmdlets.get(3),
+                    jwt.getClaim("usr").asString()
+            );
+        }
+
+
 
         return "Command does not exist";
     }
