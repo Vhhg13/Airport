@@ -30,7 +30,7 @@ public class LogActivity extends AppCompatActivity {
                         startActivity(new Intent(this, RootMenuActivity.class));
                     else
                         startActivity(new Intent(this, MainMenuActivity.class));
-
+                    finish();
                 }else
                     Snackbar.make(this, v, response.getString(), Snackbar.LENGTH_LONG).show();
             });

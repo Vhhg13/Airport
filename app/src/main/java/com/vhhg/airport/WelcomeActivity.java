@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -17,12 +18,12 @@ public class WelcomeActivity extends AppCompatActivity {
         Button login = findViewById(R.id.login);
         Button woregister = findViewById(R.id.woregister);
 
-        String user = Server.get(this).checkWhetherSignedIn();
-        if(user.equals("root")) {
+        boolean signedIn = Server.get(this).checkWhetherSignedIn();
+        if(signedIn && Server.get(this).isRoot()) {
             startActivity(new Intent(this, RootMenuActivity.class));
             finish();
             return;
-        } else if (!user.equals("")) {
+        } else if (signedIn) {
             startActivity(new Intent(this, MainMenuActivity.class));
             finish();
             return;

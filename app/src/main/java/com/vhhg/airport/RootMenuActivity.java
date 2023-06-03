@@ -2,6 +2,7 @@ package com.vhhg.airport;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -16,6 +17,9 @@ public class RootMenuActivity extends AppCompatActivity {
         Button add = findViewById(R.id.add_flight);
         Button users = findViewById(R.id.users);
 
+        add.setOnClickListener(v -> {
+            startActivity(new Intent(this, CreateFlightActivity.class));
+        });
 
     }
 }

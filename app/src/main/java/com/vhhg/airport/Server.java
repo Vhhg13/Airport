@@ -33,12 +33,21 @@ public class Server {
     private String refreshToken;
     private PublicKey serverPublicKey;
     private Context context;
+    private boolean root;
+
+    public boolean isRoot() {
+        return root;
+    }
+
     private Server withContext(Context context){
         this.context = context;
         return this;
     }
     private void setTokens(String accessToken, String refreshToken){
         Log.d("MYTAG", "Old tokens: " + this.accessToken + " " + this.refreshToken);
+        String usrname = new JWT(accessToken).getClaim("usr").asString();
+        root = usrname.equals("root");
+
         SharedPreferences sp = context.getSharedPreferences("TOKENS", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("ACCESS", accessToken);
@@ -132,31 +141,25 @@ public class Server {
         public void setString(String string) { this.string = string; }
     }
 
-    public String checkWhetherSignedIn(){
+    public boolean checkWhetherSignedIn(){
         SharedPreferences sp = context.getSharedPreferences("TOKENS", Context.MODE_PRIVATE);
         accessToken = sp.getString("ACCESS", null);
+        root = new JWT(accessToken).getClaim("usr").asString().equals("root");
         refreshToken = sp.getString("REFRESH", null);
         if(accessToken == null || refreshToken == null)
-            return "";
+            return false;
         try {
             String result = sendAsync("refresh " + accessToken + " " + refreshToken, response -> {
                 if(response.getString().charAt(0) == 'e'){
                     String[] allTokens = response.getString().split(" ");
                     setTokens(allTokens[0], allTokens[1]);
-                    response.setString(new JWT(allTokens[0]).getClaim("usr").asString());
-                }else{
-                    response.setString(null);
                 }
             }).get().getString();
-            if(result == null)
-                return "";
-            if(result.equals("root"))
-                return "root";
-            return result;
+            return result.charAt(0) == 'e';
         } catch (ExecutionException | InterruptedException e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        return "";
+        return false;
     }
 
     public void logout() {
@@ -176,4 +179,6 @@ public class Server {
         String request = String.format("setUserInfo \"%s\" \"%s\" \"%s\"", user.getFirstName(), user.getLastName(), user.getThirdName());
         return sendAsync(withAccessToken(request), res -> {});
     }
+
+
 }
