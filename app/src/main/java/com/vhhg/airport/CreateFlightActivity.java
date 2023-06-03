@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.github.javafaker.Faker;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -75,6 +77,17 @@ public class CreateFlightActivity extends AppCompatActivity {
             }
             Toast.makeText(this, "Рейс создан", Toast.LENGTH_SHORT).show();
             finish();
+        });
+        Button random = findViewById(R.id.random);
+        random.setOnClickListener(v -> {
+            src.setText(Faker.instance().address().cityPrefix());
+            dest.setText(Faker.instance().address().city());
+            price.setText(String.valueOf((int)(Math.random()*10000)));
+            arrTime.setText(""+((int)(Math.random()*100))%12+":"+((int)(Math.random()*100))%60);
+            SimpleDateFormat sdf = new SimpleDateFormat(DatePickerFragment.format, Locale.getDefault());
+            arrDate.setText(sdf.format(Faker.instance().date().birthday()));
+            depTime.setText(""+((int)(Math.random()*100))%12+":"+((int)(Math.random()*100))%60);
+            depDate.setText(sdf.format(Faker.instance().date().birthday()));
         });
     }
 

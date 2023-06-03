@@ -12,9 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class RootFlightListAdapter extends RecyclerView.Adapter<RootFlightListAdapter.ViewHolder> {
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.getDefault());
     static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView mainText = itemView.findViewById(R.id.destpoint);
@@ -38,7 +41,7 @@ public class RootFlightListAdapter extends RecyclerView.Adapter<RootFlightListAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.mainText.setText(flights.get(position).getTo());
-        holder.bottomText.setText(flights.get(position).getDepart().toString());
+        holder.bottomText.setText(sdf.format(flights.get(position).getDepart()));
         holder.info.setOnClickListener(v -> {
             Intent intent = new Intent(context, FlightInfoActivity.class);
             intent.putExtra(FlightListAdapter.FLIGHTINFO, flights.get(position));
@@ -48,7 +51,9 @@ public class RootFlightListAdapter extends RecyclerView.Adapter<RootFlightListAd
 
         });
         holder.remove.setOnClickListener(v -> {
-
+            Server.get(context).removeFlight(flights.get(position));
+            flights.remove(position);
+            notifyDataSetChanged();
         });
     }
 

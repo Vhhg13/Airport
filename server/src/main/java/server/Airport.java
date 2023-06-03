@@ -128,7 +128,8 @@ public class Airport {
         cmd = cmdlets.get(0);
 
         if(cmd.equalsIgnoreCase("getall"))
-            try(ResultSet rs = DB.get().executeQuery("SELECT flight.*, SUM(favs.user=101) FROM flight LEFT JOIN favs ON favs.flight=flight.ID GROUP BY ID")) {
+            try(ResultSet rs = DB.get().executeQuery("SELECT flight.*, SUM(favs.user=(SELECT id FROM user WHERE username=\"%s\")) " +
+                    "FROM flight LEFT JOIN favs ON favs.flight=flight.ID GROUP BY ID", jwt.getClaim("usr").asString())) {
                 return ResponseGenerator.getall(rs);
             }
 

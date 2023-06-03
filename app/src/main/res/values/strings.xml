@@ -33,4 +33,5 @@
     <string name="menu_profile">Профиль</string>
     <string name="departure_date">Дата вылета</string>
     <string name="arrival_date">Дата прибытия</string>
+    <string name="random_flight">Случайный рейс</string>
 </resources>

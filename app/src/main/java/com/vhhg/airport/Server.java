@@ -145,10 +145,10 @@ public class Server {
     public boolean checkWhetherSignedIn(){
         SharedPreferences sp = context.getSharedPreferences("TOKENS", Context.MODE_PRIVATE);
         accessToken = sp.getString("ACCESS", null);
-        root = new JWT(accessToken).getClaim("usr").asString().equals("root");
         refreshToken = sp.getString("REFRESH", null);
         if(accessToken == null || refreshToken == null)
             return false;
+        root = new JWT(accessToken).getClaim("usr").asString().equals("root");
         try {
             String result = sendAsync("refresh " + accessToken + " " + refreshToken, response -> {
                 if(response.getString().charAt(0) == 'e'){
@@ -196,4 +196,7 @@ public class Server {
         sendAsync("log " + str, res -> {});
     }
 
+    public CompletableFuture<StringHolder> removeFlight(Flight flight){
+        return sendAsync(withAccessToken("removeflight " + flight.getID()), res -> {});
+    }
 }
