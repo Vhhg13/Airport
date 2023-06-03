@@ -13,10 +13,13 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.ViewHolder> {
     public static final String FLIGHTINFO = "com.vhhg.FlightListAdapter.FlightInfo";
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.getDefault());
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -27,7 +30,7 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.mainText.setText(flights.get(position).getTo());
-        holder.bottomText.setText(flights.get(position).getDepart().toString());
+        holder.bottomText.setText(sdf.format(flights.get(position).getDepart()));
         holder.fav.setChecked(flights.get(position).isFav());
         holder.info.setOnClickListener(v -> {
             Intent intent = new Intent(context, FlightInfoActivity.class);

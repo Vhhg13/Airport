@@ -64,5 +64,10 @@ public class ProfileActivity extends AppCompatActivity {
             intent.putExtra(EDITPROFILE, user[0]);
             launcher.launch(intent);
         });
+
+        signOut.setOnClickListener(v -> {
+            startActivity(new Intent(this, WelcomeActivity.class));
+            finish();
+        });
     }
 }

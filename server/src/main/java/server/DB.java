@@ -51,6 +51,8 @@ public class DB {
                     "last_name VARCHAR(20)," +
                     "third_name VARCHAR(20)," +
                     "profile_picture VARCHAR(10))");
+            st.execute("INSERT INTO user VALUES (1, \"root\", \"$2a$12$1T4eqsqdxnMYDNNmJtmEme1oM4Kyvgf1J2oyXCKmuP/Quao9nxYGC\", " +
+                    "\"\", 0, \"Администратор\", \"\", \"\", \"root.png\")");
         }
         if(!flightsExist){
             st.execute("CREATE TABLE flight (" +

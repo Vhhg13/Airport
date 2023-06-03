@@ -4,7 +4,7 @@
   vars:
     ansible_port: 34
   tasks:
-    - name: Clear Airport log
+    - name: Clear Airport db
       shell: echo > /home/maxx/Airport/__airport.db
     - name: Restart server
       shell: /home/maxx/Airport/runairport ansible

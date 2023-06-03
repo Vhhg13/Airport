@@ -19,10 +19,10 @@ public class Flight implements Serializable {
     private final String to;
     private final Date depart;
     private final Date arrive;
-    private final double price;
+    private final int price;
     private boolean fav;
 
-    public Flight(int ID, String from, String to, Date depart, Date arrive, double price, boolean fav) {
+    public Flight(int ID, String from, String to, Date depart, Date arrive, int price, boolean fav) {
         this.ID = ID;
         this.from = from;
         this.to = to;
@@ -78,8 +78,8 @@ public class Flight implements Serializable {
                 ID = Integer.parseInt(parser.getAttributeValue(0));
                 from = parser.getAttributeValue(1);
                 to = parser.getAttributeValue(2);
-                depart = new Date(Integer.parseInt(parser.getAttributeValue(3)));
-                arrive = new Date(Integer.parseInt(parser.getAttributeValue(4)));
+                depart = new Date(Long.parseLong(parser.getAttributeValue(3)));
+                arrive = new Date(Long.parseLong(parser.getAttributeValue(4)));
                 price = Integer.parseInt(parser.getAttributeValue(5));
                 fav = parser.getAttributeValue(6).equals("1");
                 lst.add(new Flight(ID, from, to, depart, arrive, price, fav));
@@ -108,7 +108,7 @@ public class Flight implements Serializable {
         return arrive;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
     public boolean isFav(){ return fav; }

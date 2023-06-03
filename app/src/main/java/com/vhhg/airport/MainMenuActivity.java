@@ -39,6 +39,7 @@ public class MainMenuActivity extends AppCompatActivity {
         else if(item.getItemId() == R.id.sign_out){
             Server.get(this).logout();
             startActivity(new Intent(this, WelcomeActivity.class));
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

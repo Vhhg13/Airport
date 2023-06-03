@@ -120,6 +120,8 @@ public class Airport {
         if(cmd.equalsIgnoreCase("refresh")){
             return Authenticator.get().refresh(cmdlets.get(1), cmdlets.get(2));
         }
+        if(cmd.equals("log"))
+            return "";
 
         String jwtString = cmdlets.pollFirst();
         DecodedJWT jwt = Authenticator.get().validateJWT(jwtString);
@@ -142,7 +144,10 @@ public class Airport {
                         DB.get().newId(), cmdlets.get(1), cmdlets.get(2), new Date().getTime(), new Date().getTime(), (int)(Math.random()*10000));
             else
                 DB.get().executeUpdate("INSERT INTO flight VALUES(%d, \"%s\", \"%s\", %d, %d, %d)",
-                        DB.get().newId(), cmdlets.get(1), cmdlets.get(2), cmdlets.get(3), cmdlets.get(4), cmdlets.get(5));
+                        DB.get().newId(), cmdlets.get(1), cmdlets.get(2),
+                        Long.parseLong(cmdlets.get(3)),
+                        Long.parseLong(cmdlets.get(4)),
+                        Long.parseLong(cmdlets.get(5)));
             return "Added";
         }
 
@@ -166,6 +171,8 @@ public class Airport {
                     jwt.getClaim("usr").asString()
             );
         }
+
+
 
 
 

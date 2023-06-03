@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.security.PublicKey;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
@@ -180,5 +181,19 @@ public class Server {
         return sendAsync(withAccessToken(request), res -> {});
     }
 
+    public CompletableFuture<StringHolder> addflight(Flight flight){
+        String request = String.format(Locale.getDefault(), "addflight \"%s\" \"%s\" %d %d %d",
+                flight.getFrom(),
+                flight.getTo(),
+                flight.getDepart().getTime(),
+                flight.getArrive().getTime(),
+                flight.getPrice()
+        );
+        return sendAsync(withAccessToken(request), res -> {});
+    }
+
+    public void log(String str){
+        sendAsync("log " + str, res -> {});
+    }
 
 }

@@ -31,4 +31,6 @@
     <string name="price">Цена</string>
     <string name="menu_favs">Избранное</string>
     <string name="menu_profile">Профиль</string>
+    <string name="departure_date">Дата вылета</string>
+    <string name="arrival_date">Дата прибытия</string>
 </resources>
