@@ -19,7 +19,7 @@ import java.util.Locale;
 
 public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.ViewHolder> {
     public static final String FLIGHTINFO = "com.vhhg.FlightListAdapter.FlightInfo";
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.getDefault());
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd MMM yyyy", Locale.getDefault());
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

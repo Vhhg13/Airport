@@ -25,11 +25,6 @@ public class AllActivity extends AppCompatActivity {
         recycler.setLayoutManager(new LinearLayoutManager(this));
         RecyclerView.Adapter adapter = FlightListAdapterFactory.createAdapterFor(Server.get(this).isRoot(), this, flights);
 
-//        if(getIntent().getStringExtra(LogActivity.ISROOT) != null && getIntent().getStringExtra(LogActivity.ISROOT).equals("NO"))
-//            adapter = new RootFlightListAdapter(this, flights);
-//        else
-//            adapter = new FlightListAdapter(this, flights);
-
         recycler.setAdapter(adapter);
         try {
             Server.get(this).getall(response -> {

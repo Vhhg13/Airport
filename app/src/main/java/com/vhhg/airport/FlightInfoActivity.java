@@ -18,9 +18,9 @@ public class FlightInfoActivity extends AppCompatActivity {
         TextView arr = findViewById(R.id.arrival);
         TextView price = findViewById(R.id.price);
         Flight flight = (Flight)getIntent().getSerializableExtra(FlightListAdapter.FLIGHTINFO);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.getDefault());
-        dep.setText(sdf.format(flight.getDepart()));
-        arr.setText(sdf.format(flight.getArrive()));
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd MMM yyyy", Locale.getDefault());
+        dep.setText(getResources().getString(R.string.flight_info, flight.getFrom(), sdf.format(flight.getDepart())));
+        arr.setText(getResources().getString(R.string.flight_info, flight.getTo(), sdf.format(flight.getArrive())));
         price.setText(String.valueOf(flight.getPrice()));
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class RootFlightListAdapter extends RecyclerView.Adapter<RootFlightListAdapter.ViewHolder> {
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.getDefault());
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd MMM yyyy", Locale.getDefault());
     static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView mainText = itemView.findViewById(R.id.destpoint);
