@@ -11,7 +11,7 @@ public class ResponseGenerator {
         while(rs.next()){
             sb.append(String.format(Locale.getDefault(), "<flight id=\"%d\" from=\"%s\" to=\"%s\" date0=\"%d\" date1=\"%s\" price=\"%s\" fav=\"%d\"/>",
                     rs.getInt("ID"), rs.getString("startpoint"), rs.getString("dest"),
-                    rs.getLong("date0"), rs.getLong("date1"), rs.getInt("price"), rs.getInt(7)));
+                    rs.getDate("date0").getTime(), rs.getDate("date1").getTime(), rs.getInt("price"), rs.getInt(7)));
         }
         sb.append("</response>");
         return sb.toString();
