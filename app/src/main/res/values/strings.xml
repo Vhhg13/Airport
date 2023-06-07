@@ -35,4 +35,5 @@
     <string name="arrival_date">Дата прибытия</string>
     <string name="random_flight">Случайный рейс</string>
     <string name="flight_info">%s\n%s</string>
+    <string name="data">Введите данные полёта</string>
 </resources>

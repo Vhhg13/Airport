@@ -15,9 +15,11 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Locale;
 
 import javax.crypto.BadPaddingException;
 
@@ -171,6 +173,54 @@ public class Airport {
                     cmdlets.get(1), cmdlets.get(2), cmdlets.get(3),
                     jwt.getClaim("usr").asString()
             );
+            return "Set";
+        }
+
+        if(cmd.equalsIgnoreCase("findFlight")){
+            String from = cmdlets.get(1);
+            String to = cmdlets.get(2);
+            String date0 = cmdlets.get(3);
+            String date1 = cmdlets.get(4);
+            String price1 = cmdlets.get(5);
+            String price2 = cmdlets.get(6);
+            StringBuilder query = new StringBuilder().append("SELECT *, 0 FROM flight WHERE ");
+            boolean lastWasAnd = true;
+            if(!from.isBlank()) {
+                query.append("UPPER(startpoint) = UPPER('").append(from).append("') ");
+                lastWasAnd = false;
+            }
+
+            if(!to.isBlank()) {
+                if(!lastWasAnd) query.append(" AND ");
+                query.append("UPPER(dest) = UPPER('").append(from).append("') ");
+                lastWasAnd = false;
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("'yyyy-MM-dd'", Locale.getDefault());
+            if(!date0.isBlank()){
+                if(!lastWasAnd) query.append(" AND ");
+                query.append("date0 > '").append(date0).append("'");
+                lastWasAnd = false;
+            }
+            if(!date1.isBlank()){
+                if(!lastWasAnd) query.append(" AND ");
+                query.append("'").append(date1).append("' > date1");
+                lastWasAnd = false;
+            }
+            if(!price1.isBlank()){
+                if(!lastWasAnd) query.append(" AND ");
+                query.append("price > ").append(price1);
+                lastWasAnd = false;
+            }
+            if(!price2.isBlank()){
+                if(!lastWasAnd) query.append(" AND ");
+                query.append("price < ").append(price2);
+                lastWasAnd = false;
+            }
+            System.out.println(query);
+
+            try(ResultSet rs = DB.get().executeQuery(query.toString())){
+                return ResponseGenerator.getall(rs);
+            }
         }
 
 

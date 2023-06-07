@@ -24,6 +24,9 @@ public class RootMenuActivity extends AppCompatActivity {
             startActivity(new Intent(this, AllActivity.class));
         });
 
+        find.setOnClickListener(v ->{
+            startActivity(new Intent(this, FindFlightActivity.class));
+        });
         add.setOnClickListener(v -> {
             startActivity(new Intent(this, CreateFlightActivity.class));
         });

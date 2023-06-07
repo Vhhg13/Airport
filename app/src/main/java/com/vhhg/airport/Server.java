@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.security.PublicKey;
 import java.util.Base64;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -133,6 +134,11 @@ public class Server {
             }
         }
         return accessToken + " " + command;
+    }
+
+    public CompletableFuture<StringHolder> findFlight(Flight newFlight, Consumer<StringHolder> callback) {
+        String request = "findflight " + newFlight.toFindFlightString();
+        return sendAsync(withAccessToken(request), callback);
     }
 
     public static class StringHolder{

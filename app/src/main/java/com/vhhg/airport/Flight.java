@@ -10,8 +10,10 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Locale;
 
 public class Flight implements Serializable {
     private final int ID;
@@ -21,6 +23,7 @@ public class Flight implements Serializable {
     private final Date arrive;
     private final int price;
     private boolean fav;
+    private int price2;
 
     public Flight(int ID, String from, String to, Date depart, Date arrive, int price, boolean fav) {
         this.ID = ID;
@@ -30,6 +33,17 @@ public class Flight implements Serializable {
         this.arrive = arrive;
         this.price = price;
         this.fav = fav;
+    }
+
+    public Flight(int ID, String from, String to, Date depart, Date arrive, int price, boolean fav, int price2) {
+        this.ID = ID;
+        this.from = from;
+        this.to = to;
+        this.depart = depart;
+        this.arrive = arrive;
+        this.price = price;
+        this.fav = fav;
+        this.price2 = price2;
     }
     public static Flight[] arrayFrom(String xml)throws XmlPullParserException, IOException{
         LinkedList<Flight> lst = new LinkedList<>();
@@ -115,5 +129,11 @@ public class Flight implements Serializable {
 
     public void setFav(boolean fav) {
         this.fav = fav;
+    }
+
+    public String toFindFlightString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        return String.format(Locale.getDefault(), "\"%s\" \"%s\" \"%s\" \"%s\" %d %d", from, to, sdf.format(depart), sdf.format(arrive), price, price2);
+        //return from + " " + to + " " + sdf.format(depart) + " " + sdf.format(arrive) + " " + price + " " + price2;
     }
 }

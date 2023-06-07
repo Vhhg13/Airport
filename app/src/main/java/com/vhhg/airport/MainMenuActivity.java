@@ -16,11 +16,13 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
         Button all = findViewById(R.id.all);
+        Button find = findViewById(R.id.find_flight);
         Button dep = findViewById(R.id.departures);
         Button arr = findViewById(R.id.arrivals);
         Button favs = findViewById(R.id.favs);
 
         all.setOnClickListener(v -> startActivity(new Intent(this, AllActivity.class).putExtra(AllActivity.FROMTO, new boolean[]{true, true})));
+        find.setOnClickListener(v -> startActivity(new Intent(this, FindFlightActivity.class)));
         dep.setOnClickListener(v -> startActivity(new Intent(this, AllActivity.class).putExtra(AllActivity.FROMTO, new boolean[]{false, true})));
         arr.setOnClickListener(v -> startActivity(new Intent(this, AllActivity.class).putExtra(AllActivity.FROMTO, new boolean[]{true, false})));
         favs.setOnClickListener(v -> startActivity(new Intent(this, FavsActivity.class)));
