@@ -9,7 +9,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.widget.TintableCheckedTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
@@ -22,7 +29,7 @@ public class RootFlightListAdapter extends RecyclerView.Adapter<RootFlightListAd
 
         TextView mainText = itemView.findViewById(R.id.destpoint);
         TextView bottomText = itemView.findViewById(R.id.status);
-        Button edit = itemView.findViewById(R.id.edit);
+        //Button edit = itemView.findViewById(R.id.edit);
         Button info = itemView.findViewById(R.id.info);
         Button remove = itemView.findViewById(R.id.del);
 
@@ -40,20 +47,29 @@ public class RootFlightListAdapter extends RecyclerView.Adapter<RootFlightListAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.mainText.setText(flights.get(position).getTo());
-        holder.bottomText.setText(sdf.format(flights.get(position).getDepart()));
+        StringBuilder txt = new StringBuilder();
+        Flight flight = flights.get(position);
+        txt.append(flight.getFrom()).append(" -> ").append(flight.getTo());
+        holder.mainText.setText(txt.toString());
+        holder.bottomText.setText(sdf.format(flight.getDepart()) + "\n" + sdf.format(flight.getArrive()));
         holder.info.setOnClickListener(v -> {
             Intent intent = new Intent(context, FlightInfoActivity.class);
-            intent.putExtra(FlightListAdapter.FLIGHTINFO, flights.get(position));
+            intent.putExtra(FlightListAdapter.FLIGHTINFO, flight);
             context.startActivity(intent);
         });
-        holder.edit.setOnClickListener(v -> {
-
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, FlightInfoActivity.class);
+            intent.putExtra(FlightListAdapter.FLIGHTINFO, flight);
+            context.startActivity(intent);
         });
+
+//        holder.edit.setOnClickListener(v -> {
+//
+//        });
         holder.remove.setOnClickListener(v -> {
-            Server.get(context).removeFlight(flights.get(position));
             flights.remove(position);
             notifyDataSetChanged();
+            Server.get(context).removeFlight(flight);
         });
     }
 

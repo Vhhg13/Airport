@@ -3,6 +3,7 @@ package com.vhhg.airport;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -67,11 +68,11 @@ public class CreateFlightActivity extends AppCompatActivity {
         arrDate.setOnClickListener(getDateListener(arrDate));
         findViewById(R.id.arr_date_btn).setOnClickListener(getDateListener(arrDate));
 
-
         save.setOnClickListener(v -> {
             try {
-                Server.get(this).addflight(createFlight());
-            }catch(ParseException e){
+                Flight newFlight = createFlight();
+                Server.get(this).addflight(newFlight);
+            } catch (ParseException e) {
                 Toast.makeText(this, "Проверьте верность введённых дат", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -82,32 +83,31 @@ public class CreateFlightActivity extends AppCompatActivity {
         random.setOnClickListener(v -> {
             src.setText(Faker.instance().address().cityPrefix());
             dest.setText(Faker.instance().address().city());
-            price.setText(String.valueOf((int)(Math.random()*10000)));
-            arrTime.setText(""+((int)(Math.random()*100))%12+":"+((int)(Math.random()*100))%60);
+            price.setText(String.valueOf((int) (Math.random() * 10000)));
+            arrTime.setText("" + ((int) (Math.random() * 100)) % 12 + ":" + ((int) (Math.random() * 100)) % 60);
             SimpleDateFormat sdf = new SimpleDateFormat(DatePickerFragment.format, Locale.getDefault());
             arrDate.setText(sdf.format(Faker.instance().date().birthday()));
-            depTime.setText(""+((int)(Math.random()*100))%12+":"+((int)(Math.random()*100))%60);
+            depTime.setText("" + ((int) (Math.random() * 100)) % 12 + ":" + ((int) (Math.random() * 100)) % 60);
             depDate.setText(sdf.format(Faker.instance().date().birthday()));
         });
+
     }
 
-        private Flight createFlight() throws ParseException {
+    private Flight createFlight() throws ParseException {
         //    public Flight(int ID, String from, String to, Date depart, Date arrive, double price, boolean fav) {
-            SimpleDateFormat sdf = new SimpleDateFormat(TimePickerFragment.format + DatePickerFragment.format, Locale.getDefault());
-            Log.e("NYTAG", TimePickerFragment.format + DatePickerFragment.format);
-            Date depart = sdf
-                    .parse(depTime.getText().toString() + " " + depDate.getText().toString());
-            Date arrive = sdf
-                    .parse(arrTime.getText().toString() + " " + arrDate.getText().toString());
-            Log.e("NYTAG", sdf.format(depart));
-            return new Flight(
-                    0,
-                    src.getText().toString(),
-                    dest.getText().toString(),
-                    depart,
-                    arrive,
-                    Integer.parseInt(price.getText().toString()),
-                    false
-            );
+        SimpleDateFormat sdf = new SimpleDateFormat(TimePickerFragment.format + DatePickerFragment.format, Locale.getDefault());
+        Date depart = sdf
+                .parse(depTime.getText().toString() + " " + depDate.getText().toString());
+        Date arrive = sdf
+                .parse(arrTime.getText().toString() + " " + arrDate.getText().toString());
+        return new Flight(
+                0,
+                src.getText().toString(),
+                dest.getText().toString(),
+                depart,
+                arrive,
+                Integer.parseInt(price.getText().toString()),
+                false
+        );
     }
 }

@@ -18,11 +18,12 @@ import java.util.concurrent.ExecutionException;
 
 public class EditProfileActivity extends AppCompatActivity {
 
+    User[] user = new User[1];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        User[] user = {(User) getIntent().getSerializableExtra(ProfileActivity.EDITPROFILE)};
+        user[0] = (User) getIntent().getSerializableExtra(ProfileActivity.EDITPROFILE);
         ImageView picture = findViewById(R.id.profile_pic);
 
         EditText lastName = findViewById(R.id.lastname);
@@ -57,4 +58,5 @@ public class EditProfileActivity extends AppCompatActivity {
             finish();
         });
     }
+
 }

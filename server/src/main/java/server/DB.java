@@ -118,14 +118,14 @@ public class DB {
                     newId(),
                     Faker.instance().address().city(),
                     Faker.instance().address().city(),
-                    new Date().getTime()/1000,
-                    new Date().getTime()/1000,
+                    new Date().getTime()/1000 + 2*60 + 3*60*60,
+                    new Date().getTime()/1000 + 17*60 + 3*60*60,
                     (int)(Math.random()*10000));
             st2.execute(query);
         }
     }
     private void clearOldFlights() throws SQLException{
-        st2.executeUpdate("DELETE FROM flight WHERE date1 < DATETIME('now', '-2 minutes')");
+        st2.executeUpdate("DELETE FROM flight WHERE date1 < DATETIME('now', '-5 minutes', '+3 hours')");
         st2.executeUpdate("DELETE FROM favs WHERE flight < (SELECT MIN(ID) FROM flight GROUP BY ID)");
     }
     public void executeUpdate(String update) throws SQLException{

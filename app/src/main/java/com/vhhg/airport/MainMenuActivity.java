@@ -20,7 +20,9 @@ public class MainMenuActivity extends AppCompatActivity {
         Button arr = findViewById(R.id.arrivals);
         Button favs = findViewById(R.id.favs);
 
-        all.setOnClickListener(v -> startActivity(new Intent(this, AllActivity.class)));
+        all.setOnClickListener(v -> startActivity(new Intent(this, AllActivity.class).putExtra(AllActivity.FROMTO, new boolean[]{true, true})));
+        dep.setOnClickListener(v -> startActivity(new Intent(this, AllActivity.class).putExtra(AllActivity.FROMTO, new boolean[]{false, true})));
+        arr.setOnClickListener(v -> startActivity(new Intent(this, AllActivity.class).putExtra(AllActivity.FROMTO, new boolean[]{true, false})));
         favs.setOnClickListener(v -> startActivity(new Intent(this, FavsActivity.class)));
     }
 

@@ -23,7 +23,7 @@ public class FavsActivity extends AppCompatActivity {
         RecyclerView recycler = findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         LinkedList<Flight> flights = new LinkedList<>();
-        FlightListAdapter adapter = new FlightListAdapter(this, flights);
+        FlightListAdapter adapter = new FlightListAdapter(this, flights, true, true);
         recycler.setAdapter(adapter);
         try {
             Server.get(this).getFavs(response -> {

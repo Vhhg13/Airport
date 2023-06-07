@@ -49,7 +49,9 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), res -> {
+            if(res.getData() == null) return;
             user[0] = (User) res.getData().getSerializableExtra(EDITPROFILE);
+            if(user[0] == null) return;
             lastName.setText(user[0].getLastName());
             firstName.setText(user[0].getFirstName());
             thirdName.setText(user[0].getThirdName());
