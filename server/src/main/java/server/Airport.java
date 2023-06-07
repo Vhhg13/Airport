@@ -163,16 +163,28 @@ public class Airport {
             return FavoritesMarker.get().mark(jwt, Integer.parseInt(cmdlets.get(1)));
 
         if(cmd.equalsIgnoreCase("getUserInfo")){
-            try(ResultSet rs = DB.get().executeQuery("SELECT * FROM user WHERE username = \"%s\"", jwt.getClaim("usr").asString())){
-                return ResponseGenerator.userInfo(rs);
-            }
+            if(cmdlets.size()==2 && jwt.getClaim("usr").asString().equals("root")){
+                try(ResultSet rs = DB.get().executeQuery("SELECT * FROM user WHERE ID = %s", cmdlets.get(1))){
+                    return ResponseGenerator.userInfo(rs);
+                }
+            }else
+                try(ResultSet rs = DB.get().executeQuery("SELECT * FROM user WHERE username = \"%s\"", jwt.getClaim("usr").asString())){
+                    return ResponseGenerator.userInfo(rs);
+                }
         }
 
         if(cmd.equalsIgnoreCase("setUserInfo")){
-            DB.get().executeUpdate("UPDATE user SET first_name = \"%s\", last_name=\"%s\", third_name=\"%s\" WHERE username = \"%s\"",
-                    cmdlets.get(1), cmdlets.get(2), cmdlets.get(3),
-                    jwt.getClaim("usr").asString()
-            );
+            if(cmdlets.size()!=5){
+                DB.get().executeUpdate("UPDATE user SET first_name = \"%s\", last_name=\"%s\", third_name=\"%s\" WHERE username = \"%s\"",
+                        cmdlets.get(1), cmdlets.get(2), cmdlets.get(3),
+                        jwt.getClaim("usr").asString()
+                );
+            } else if(jwt.getClaim("usr").asString().equals("root")) {
+                DB.get().executeUpdate("UPDATE user SET first_name = \"%s\", last_name=\"%s\", third_name=\"%s\"WHERE ID = %d",
+                        cmdlets.get(1), cmdlets.get(2), cmdlets.get(3), cmdlets.get(4)
+                );
+            } else
+                return "Not set";
             return "Set";
         }
 
@@ -183,7 +195,7 @@ public class Airport {
             String date1 = cmdlets.get(4);
             String price1 = cmdlets.get(5);
             String price2 = cmdlets.get(6);
-            StringBuilder query = new StringBuilder().append("SELECT *, 0 FROM flight WHERE ");
+            StringBuilder query = new StringBuilder().append("SELECT flight.*, SUM(favs.user=(SELECT id FROM user WHERE username=\"%s\")) FROM flight LEFT JOIN favs ON favs.flight=flight.ID WHERE ");
             boolean lastWasAnd = true;
             if(!from.isBlank()) {
                 query.append("UPPER(startpoint) = UPPER('").append(from).append("') ");
@@ -192,7 +204,7 @@ public class Airport {
 
             if(!to.isBlank()) {
                 if(!lastWasAnd) query.append(" AND ");
-                query.append("UPPER(dest) = UPPER('").append(from).append("') ");
+                query.append("UPPER(dest) = UPPER('").append(to).append("') ");
                 lastWasAnd = false;
             }
             SimpleDateFormat sdf = new SimpleDateFormat("'yyyy-MM-dd'", Locale.getDefault());
@@ -216,11 +228,21 @@ public class Airport {
                 query.append("price < ").append(price2);
                 lastWasAnd = false;
             }
+            query.append(" GROUP BY ID ");
             System.out.println(query);
 
-            try(ResultSet rs = DB.get().executeQuery(query.toString())){
+            try(ResultSet rs = DB.get().executeQuery(query.toString(), jwt.getClaim("usr").asString())){
                 return ResponseGenerator.getall(rs);
             }
+        }
+
+        if(cmd.equalsIgnoreCase("getusers")){
+            try(ResultSet rs = DB.get().executeQuery("SELECT * FROM user")){
+                return ResponseGenerator.userInfo(rs);
+            }
+        }
+        if(cmd.equalsIgnoreCase("deleteuser")){
+            DB.get().executeUpdate("DELETE FROM user WHERE ID = %d", Integer.parseInt(cmdlets.get(1)));
         }
 
 

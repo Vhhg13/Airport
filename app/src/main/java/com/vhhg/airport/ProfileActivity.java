@@ -68,8 +68,8 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         signOut.setOnClickListener(v -> {
-            startActivity(new Intent(this, WelcomeActivity.class));
-            finish();
+            Server.get(this).logout();
+            startActivity(new Intent(this, WelcomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
         });
     }
 }

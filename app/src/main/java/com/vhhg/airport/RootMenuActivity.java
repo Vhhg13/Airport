@@ -30,6 +30,7 @@ public class RootMenuActivity extends AppCompatActivity {
         add.setOnClickListener(v -> {
             startActivity(new Intent(this, CreateFlightActivity.class));
         });
+        users.setOnClickListener(v -> startActivity(new Intent(this, UsersActivity.class)));
 
     }
     @Override

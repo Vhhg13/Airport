@@ -141,6 +141,14 @@ public class Server {
         return sendAsync(withAccessToken(request), callback);
     }
 
+    public CompletableFuture<StringHolder> getUsers(Consumer<StringHolder> callback) {
+        return sendAsync(withAccessToken("getusers"), callback);
+    }
+
+    public CompletableFuture<StringHolder> deleteUser(User user, Consumer<StringHolder> callback) {
+        return sendAsync(withAccessToken("deleteuser " + user.getID()), callback);
+    }
+
     public static class StringHolder{
         private String string;
         public StringHolder(String string) { this.string = string; }
@@ -204,5 +212,9 @@ public class Server {
 
     public CompletableFuture<StringHolder> removeFlight(Flight flight){
         return sendAsync(withAccessToken("removeflight " + flight.getID()), res -> {});
+    }
+
+    public CompletableFuture<StringHolder> getUserInfo(int id, Consumer<StringHolder> callback){
+        return sendAsync(withAccessToken("getUserInfo " + id), callback);
     }
 }

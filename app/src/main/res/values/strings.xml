@@ -36,4 +36,5 @@
     <string name="random_flight">Случайный рейс</string>
     <string name="flight_info">%s\n%s</string>
     <string name="data">Введите данные полёта</string>
+    <string name="FIO_format">%s %s %s</string>
 </resources>
