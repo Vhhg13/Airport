@@ -100,6 +100,7 @@ public class FindFlightActivity extends AppCompatActivity {
     private Flight createFlight() throws ParseException {
         //    public Flight(int ID, String from, String to, Date depart, Date arrive, double price, boolean fav) {
         SimpleDateFormat sdf = new SimpleDateFormat(TimePickerFragment.format + DatePickerFragment.format, Locale.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat(DatePickerFragment.format, Locale.getDefault());
         Date depart;
         StringBuilder dateBuilder = new StringBuilder();
 
@@ -109,6 +110,7 @@ public class FindFlightActivity extends AppCompatActivity {
 
         str = depDate.getText().toString();
         if(!str.isEmpty()) dateBuilder.append(str).append(" ");
+        else if(!depTime.getText().toString().isEmpty()) dateBuilder.append(df.format(new Date()));
         else dateBuilder.append("01.01.1971");
         depart = sdf
                 .parse(dateBuilder.toString());
@@ -121,6 +123,7 @@ public class FindFlightActivity extends AppCompatActivity {
 
         str = arrDate.getText().toString();
         if(!str.isEmpty()) dateBuilder.append(str).append(" ");
+        else if(!arrTime.getText().toString().isEmpty()) dateBuilder.append(df.format(new Date()));
         else dateBuilder.append("01.01.3000");
         Date arrive;
         arrive = sdf
