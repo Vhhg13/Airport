@@ -43,10 +43,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/button"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button"
         android:layout_margin="20dp"
         android:text="@string/login_button"
+        style="@style/welcome_button"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -21,6 +21,6 @@ public class FlightInfoActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd MMM yyyy", Locale.getDefault());
         dep.setText(getResources().getString(R.string.flight_info, flight.getFrom(), sdf.format(flight.getDepart())));
         arr.setText(getResources().getString(R.string.flight_info, flight.getTo(), sdf.format(flight.getArrive())));
-        price.setText(String.valueOf(flight.getPrice()));
+        price.setText(getResources().getString(R.string.flight_price, flight.getPrice()));
     }
 }

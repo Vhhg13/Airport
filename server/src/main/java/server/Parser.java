@@ -13,14 +13,24 @@ public class Parser {
                 "echo \"abc def",
                 "\"\" \"\""
         };
-        for(String str : commands){
-            System.out.println("Command: " + str);
-            LinkedList<String> cmdlets = parse(str);
-            System.out.printf("Array(%d){\n", cmdlets.size());
-            for(String cmdlet : cmdlets){
-                System.out.println("\t" + cmdlet);
-            }
-            System.out.println("}");
+        String[][] matches = {
+                {"echo", "hello"},
+                {"echo"},
+                {"echo", "abc"},
+                {"echo abc", "defgh i"},
+                {"echo", "abc def"},
+                {"", ""}
+        };
+
+        for(int i=0;i<commands.length;++i){
+            LinkedList<String> cmdlets = parse(commands[i]);
+            boolean all = true;
+            for(int j=0;j< cmdlets.size();++j)
+                all = all && (cmdlets.get(j).equals(matches[i][j]));
+            if(all)
+                System.out.println("Test " + (i+1) + " passed");
+            else
+                System.out.println("Test " + (i+1) + " didn't pass");
         }
     }
     private enum State{

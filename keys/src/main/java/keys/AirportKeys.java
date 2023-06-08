@@ -47,10 +47,6 @@ public class AirportKeys {
         else
             System.out.println("Test 2 didn't pass");
         // </Use RSA>
-
-        // Удалить файлы с ключами:
-        // pub.delete();
-        // pri.delete();
     }
 
     public static final int ENCRYPT = Cipher.ENCRYPT_MODE;

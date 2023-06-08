@@ -16,7 +16,6 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
         Button register = findViewById(R.id.register);
         Button login = findViewById(R.id.login);
-        Button woregister = findViewById(R.id.woregister);
 
         boolean signedIn = Server.get(this).checkWhetherSignedIn();
         if(signedIn && Server.get(this).isRoot()) {
@@ -34,10 +33,6 @@ public class WelcomeActivity extends AppCompatActivity {
         });
         login.setOnClickListener(v -> {
             startActivity(new Intent(this, LogActivity.class));
-            finish();
-        });
-        woregister.setOnClickListener(v -> {
-            startActivity(new Intent(this, AllActivity.class));
             finish();
         });
     }

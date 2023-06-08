@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Airport</string>
+    <string name="app_name">Авиарейсы аэропорта</string>
     <string name="brand_name">Авиарейсы аэропорта</string>
     <string name="welcome_text">Добро пожаловать!</string>
     <string name="register_button">Зарегистрироваться</string>
@@ -35,6 +35,15 @@
     <string name="arrival_date">Дата прибытия</string>
     <string name="random_flight">Случайный рейс</string>
     <string name="flight_info">%s\n%s</string>
-    <string name="data">Введите данные полёта</string>
+    <string name="data">Введите данные полёта:</string>
     <string name="FIO_format">%s %s %s</string>
+    <string name="flight_price">%d ₽</string>
+    <string name="profile_label">Профиль</string>
+    <string name="users_label">Пользователи</string>
+    <string name="find_flight_label">Поиск</string>
+    <string name="create_flight_label">Создание рейса</string>
+    <string name="edit_flight_label">Редактирование рейса</string>
+    <string name="menu_label">Главное меню</string>
+    <string name="flight_info_label">Сведения</string>
+    <string name="flights_label">Рейсы</string>
 </resources>

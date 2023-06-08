@@ -20,40 +20,52 @@
         tools:targetApi="31">
         <activity
             android:name=".ShowProfileActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/profile_label"/>
         <activity
             android:name=".UsersActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/users_label"/>
         <activity
             android:name=".FindFlightActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/find_flight_label"/>
         <activity
             android:name=".CreateFlightActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/create_flight_label"/>
         <activity
             android:name=".EditFlightActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/edit_flight_label"/>
         <activity
             android:name=".RootMenuActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/menu_label"/>
         <activity
             android:name=".EditProfileActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/profile_label"/>
         <activity
             android:name=".ProfileActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/profile_label"/>
         <activity
             android:name=".FlightInfoActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/flight_info_label"/>
         <activity
             android:name=".FavsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/favorites"/>
         <activity
             android:name=".AllActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/flights_label"/>
         <activity
             android:name=".MainMenuActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/menu_label"/>
         <activity
             android:name=".LogActivity"
             android:exported="false"

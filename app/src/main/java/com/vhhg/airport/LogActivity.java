@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -24,16 +25,17 @@ public class LogActivity extends AppCompatActivity {
         button.setOnClickListener(v -> {
             String username = login.getText().toString();
             String password = pwd.getText().toString();
-            Server.get(this).login(username, password, (Consumer<Server.StringHolder>) response -> {
+            String errorCode = Server.get(this).login(username, password, (Consumer<Server.StringHolder>) response -> {
                 if(response.getString().charAt(0) == 'e') {
                     if(username.equals("root"))
                         startActivity(new Intent(this, RootMenuActivity.class));
                     else
                         startActivity(new Intent(this, MainMenuActivity.class));
                     finish();
-                }else
-                    Snackbar.make(this, v, response.getString(), Snackbar.LENGTH_LONG).show();
-            });
+                }
+            }).join().getString();
+            if(errorCode.equals("No such user"))
+                Toast.makeText(this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
         });
     }
     @Override

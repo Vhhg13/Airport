@@ -1,0 +1,10 @@
+<response>
+    <flight date0="1686243933000" date1="1686244833000" fav="1" from="East Laelview"
+        id="11937" price="8255" to="New Troy" />
+    <flight date0="1686244325000" date1="1686245225000" fav="0" from="Rudolphchester"
+        id="11950" price="9254" to="South Armandland" />
+    <flight date0="1686244355000" date1="1686245255000" fav="1" from="Beahanmouth"
+        id="11951" price="9964" to="New Gilbertotown" />
+    <flight date0="1686244747000" date1="1686245647000" fav="0" from="New Chad"
+        id="11964" price="9509" to="South Jeromybury" />
+</response>

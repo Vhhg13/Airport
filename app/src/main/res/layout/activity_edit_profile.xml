@@ -68,9 +68,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/edit"
         android:text="@string/change_profile_data"
+        style="@style/welcome_button"
 
         android:layout_width="320dp"
         android:layout_height="wrap_content"

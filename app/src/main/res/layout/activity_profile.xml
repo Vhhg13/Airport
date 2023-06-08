@@ -65,9 +65,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/edit"
         android:text="@string/change_profile_data"
+        style="@style/welcome_button"
 
         android:layout_width="130dp"
         android:layout_height="wrap_content"
@@ -77,9 +78,10 @@
         app:layout_constraintEnd_toStartOf="@+id/exit"
         app:layout_constraintVertical_bias="0.9"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/exit"
         android:text="@string/log_out_profile"
+        style="@style/welcome_button"
 
         android:layout_width="130dp"
         android:layout_height="wrap_content"

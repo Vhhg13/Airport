@@ -6,9 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".MainMenuActivity">
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/all"
         android:text="@string/all_flights"
+        style="@style/welcome_button"
         android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,9 +20,10 @@
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintVertical_bias="0.3"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/find_flight"
         android:text="@string/find_flight"
+        style="@style/welcome_button"
         android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,10 +33,11 @@
         app:layout_constraintBottom_toTopOf="@+id/departures"/>
 
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/departures"
         android:text="@string/departures"
         android:layout_margin="15dp"
+        style="@style/welcome_button"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,10 +46,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/arrivals"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/arrivals"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/welcome_button"
 
         android:layout_margin="15dp"
         android:text="@string/arrivals"
@@ -56,12 +60,13 @@
         app:layout_constraintBottom_toTopOf="@+id/favs"
         />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/favs"
         android:text="@string/favorites"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
+        style="@style/welcome_button"
 
         app:layout_constraintTop_toBottomOf="@+id/arrivals"
         app:layout_constraintStart_toStartOf="parent"

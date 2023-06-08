@@ -54,10 +54,10 @@
         app:layout_constraintVertical_bias="0.6"
         />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/register"
         android:text="@string/register_button"
-
+        style="@style/welcome_button"
 
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
@@ -67,10 +67,13 @@
         app:layout_constraintBottom_toTopOf="@+id/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-    <Button
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login"
         android:text="@string/login_button"
-
+        style="@style/welcome_button"
 
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
@@ -81,10 +84,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/woregister"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/woregister"
         android:text="@string/woregister_button"
-
+        style="@style/welcome_button"
+        android:visibility="invisible"
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
