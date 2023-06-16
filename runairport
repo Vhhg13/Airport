@@ -1,0 +1,20 @@
+#!/bin/bash
+exec >> /var/www/html/airportlog.txt 2>> /var/www/html/airportlog.txt
+cd /home/maxx/Airport
+[ "$0" = "./runairport" ] || [ "$1" = "ansible" ]
+force_restart=$?
+pid_name=$(jps -l | grep Airport)
+pid=$(echo $pid_name | awk '{print $1}')
+exists=$?
+if [ $force_restart = 0 ] && [ $exists = 0 ]
+then
+    kill $pid
+    echo Server killed
+fi
+if ! (jps -l | grep Airport >/dev/null)
+then
+    echo "======================================================================================================================================================================================================================="
+    java -jar /home/maxx/Airport/Airport.jar &
+    [ $force_restart = 0 ] && echo Server started
+fi
+disown 2>/dev/null>/dev/null
