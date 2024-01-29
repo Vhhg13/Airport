@@ -89,5 +89,5 @@ To make asynchronous network requests `java.util.concurrent` and its `Completabl
 
 To represent different screens the Multiple Activity Architecture was used.
 
-[^1]: [DB schema](db_schema.png)
+[^1]: [DB schema](https://github.com/Vhhg13/Airport/blob/9452f4bbbbd7701ca5f2a5bd4aaa4dd6c73addf9/db_schema.png)
 [^2]: I didn't want to buy an SSL certificate
