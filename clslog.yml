@@ -1,8 +1,5 @@
 - name: Clear Airport log
-  hosts: featherserver
-  remote_user: maxx
-  vars:
-    ansible_port: 34
+  hosts: airportserver
   tasks:
     - name: Clear Airport log
       shell: echo $(jps -l | grep Airport || echo "Server is not running") > /var/www/html/airportlog.txt

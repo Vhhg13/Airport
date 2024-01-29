@@ -1,6 +1,6 @@
 #!/bin/bash
 exec >> /var/www/html/airportlog.txt 2>> /var/www/html/airportlog.txt
-cd /home/maxx/Airport
+cd $HOME/Airport
 [ "$0" = "./runairport" ] || [ "$1" = "ansible" ]
 force_restart=$?
 pid_name=$(jps -l | grep Airport)
@@ -14,7 +14,7 @@ fi
 if ! (jps -l | grep Airport >/dev/null)
 then
     echo "======================================================================================================================================================================================================================="
-    java -jar /home/maxx/Airport/Airport.jar &
+    java -jar $HOME/Airport/Airport.jar &
     [ $force_restart = 0 ] && echo Server started
 fi
 disown 2>/dev/null>/dev/null

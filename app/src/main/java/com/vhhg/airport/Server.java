@@ -61,7 +61,7 @@ public class Server {
     }
     public CompletableFuture<StringHolder> sendAsync(String req, Consumer<? super StringHolder> callback){
         CompletableFuture<StringHolder> future = CompletableFuture.supplyAsync(() -> {
-            try(Socket socket = new Socket("vid16.online", 42000)){
+            try(Socket socket = new Socket("84.246.85.148", 42000)){
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 writer.write(req + "\n");

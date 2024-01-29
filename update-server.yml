@@ -1,19 +1,27 @@
 - name: Upload Airport.jar to Server
-  hosts: featherserver
-  remote_user: maxx
-  vars:
-    ansible_port: 34
+  hosts: airportserver
   tasks:
+    - name: Ensure directory
+      shell: mkdir -p /home/{{ ansible_user }}/Airport
+    - name: Touch Airport.jar
+      shell: touch /home/{{ ansible_user }}/Airport/Airport.jar
     - name: Delete old Airport.jar
-      shell: rm /home/maxx/Airport/Airport.jar
+      shell: rm /home/{{ ansible_user }}/Airport/Airport.jar || true
     - name: Copy Airport.jar to Server
       copy:
         src: server/build/libs/server-all.jar
-        dest: /home/maxx/Airport/Airport.jar
-        owner: maxx
-        group: maxx
+        dest: /home/{{ ansible_user }}/Airport/Airport.jar
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
         mode: '0644'
+    - name: Copy runairport to Server
+      copy:
+        src: runairport
+        dest: /home/{{ ansible_user }}/Airport/runairport
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0755'
     - name: Restart Airport
-      shell: /home/maxx/Airport/runairport ansible
+      shell: /home/{{ ansible_user }}/Airport/runairport ansible
       async: 10
       poll: 0

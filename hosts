@@ -1,2 +1,2 @@
-[featherserver]
-feather ansible_host=84.246.85.148
+[airportserver]
+84.246.85.148 ansible_connection=ssh ansible_user=maxx ansible_port=22
