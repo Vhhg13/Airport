@@ -45,7 +45,7 @@ Client forms a request to the server in a bash-like command:
 > login _username password_
 
 After the command is formed it is:
-- [[#Encryption [ 2]|Encrypted with RSA]]
+- _Encrypted with RSA_
 - Encoded with Base64
 - Sent to server via a socket
 
@@ -74,12 +74,12 @@ __Passwords__ are hashed with [Bcrypt](https://github.com/patrickfav/bcrypt) and
 
 All the data is stored in a single SQLite database file[^1]. The connection to the database is established using [sqlite-jdbc](https://github.com/xerial/sqlite-jdbc).
 
-### Encryption [^2]
+### Encryption
 
 The encryption keys are created at the first start of the server side application.
 To make working with keys easier the [AirportKeys](keys/src/main/java/keys/AirportKeys.java) class was written.
 
-This auxiliary class lets us create, save and read the encryption keys, as well as encrypt/decrypt data using the RSA algorithm.
+This auxiliary class lets us create, save and read the encryption keys, as well as encrypt/decrypt data using the __RSA algorithm__.
 
 ##  Mobile App
 
@@ -90,4 +90,3 @@ To make asynchronous network requests `java.util.concurrent` and its `Completabl
 To represent different screens the Multiple Activity Architecture was used.
 
 [^1]: [DB schema](https://github.com/Vhhg13/Airport/blob/9452f4bbbbd7701ca5f2a5bd4aaa4dd6c73addf9/db_schema.png)
-[^2]: I didn't want to buy an SSL certificate
